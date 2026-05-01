@@ -2,15 +2,14 @@ import React from 'react';
 
 function ReportCard({ report }) {
   return (
-    <div className=''> 
-
+    <div> 
       <div className='flex flex-col gap-4 w-full bg-white border border-gray-300 rounded-xl p-6'>
 
         {/* REPORTS */}
         <div>
-          <div className='flex items-center justify-between my-2'>
-            <div className='flex flex-col gap-1'>
-              <p className='text-xs'>{report.id}</p>
+          <div className='flex items-center justify-between'>
+            <div className='flex flex-col gap-1 my-2'>
+              <p className='text-xs text-stone-500'>{report.id}</p>
               <h1 className='text-sm'>{report.title}</h1>
             </div>
 
@@ -23,22 +22,22 @@ function ReportCard({ report }) {
             </span>
           </div>
 
-          <div className='text-sm'>
+          <div className='text-sm text-stone-500'>
             {report.description}
           </div>
 
-          <div className='flex gap-6 py-3 mt-1'>
+          <div className='flex gap-6 py-3 mt-1 justify-between'>
             <div className='flex flex-col gap-1'>
-              <p className='text-xs font-medium'>{report.category}</p>
-              <p className='text-xs font-medium'>{report.location}</p>
+              <p className='text-xs font-medium text-stone-500'>{report.category}</p>
+              <p className='text-xs font-medium text-stone-500'>{report.location}</p>
             </div>
-            <div className='flex flex-col gap-1'>
-              <p className='text-xs font-medium'>{report.author}</p>
-              <p className='text-xs font-medium'>{report.date}</p>
+            <div className='flex flex-col'>
+              <p className='text-xs font-medium text-stone-500'>{report.author}</p>
+              <p className='text-xs font-medium text-stone-500'>{report.date}</p>
             </div> 
           </div>
 
-          <hr className='border-stone-100'/>
+          <hr className='border-stone-300'/>
 
           <div className='flex gap-4 mt-3'>
             <button className='text-xs font-medium bg-green-50 text-green-700 border-green-200 hover:bg-green-100 rounded-lg px-4 py-2'>

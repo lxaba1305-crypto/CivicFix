@@ -22,16 +22,13 @@ function StatsCard() {
   ]
 
   return (
-    <div>
-      <div className='flex gap-4'>
-        {stats.map((stat) => (
-        <div key={stat.label} className='border border-stone-200 p-2 rounded-xl'>
-          <h1>{stat.label}</h1>
-          <p>{stat.value}</p>
+    <div className='grid grid-cols-2 sm:grid-cols-4 gap-4 my-2'>
+      {stats.map((stat) => (
+        <div key={stat.label} className='border border-stone-200 p-2 rounded-2xl p-4 flex flex-col gap-1'>
+          <p className='text-xs text-stone-400'>{stat.label}</p>
+          <p className='text-3xl font-medium'>{stat.value}</p>
         </div>
-        ))}
-        
-      </div>
+      ))}
     </div>
   )
 }

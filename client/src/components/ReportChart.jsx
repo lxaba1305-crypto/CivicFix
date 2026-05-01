@@ -1,19 +1,97 @@
-import React from 'react'
+import React from 'react';
+import { reports } from '../data/reports';
+import { Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, Cell, Legend } from 'recharts';
 
 function ReportChart() {
+  // REPORTS PER DAY (LINE CHART)
+  const reportsPerDay = Object.values(
+    reports.reduce((acc, report) => {
+      if (!acc[report.date]) {
+        acc[report.date] = { date: report.date, count: 0 };
+      }
+      acc[report.date].count++;
+      return acc;
+    }, {})
+  );
+
+  // STATUS COUNTS (FOR PIE CHART)
+  const statusCounts = [
+    {
+      name: "Pending",
+      value: reports.filter(r => r.status === "pending").length,
+    },
+    {
+      name: "In Progress",
+      value: reports.filter(r => r.status === "in progress").length,
+    },
+    {
+      name: "Resolved",
+      value: reports.filter(r => r.status === "resolved").length,
+    },
+  ]
+
+  const COLORS = ["#facc15", "#3b82f6", "#22c55e"]; // yellow, blue, green
+
   return (
-    <div>
-       <div className='flex gap-4'>
-      {/* Reports this week - line graph */}
-        <div className='border border-gray-300'>
-          <h1>Reports this week</h1>
+    <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+      
+        {/* line chart */}
+        <div className='min-w-xl border border-gray-300 p-4 rounded-xl'>
+          <h1 className='text-sm font-semibold text-stone-800 mb-4'>Reports this week</h1>
+
+          <ResponsiveContainer width={"100%"} height={220}>
+            <LineChart data={reportsPerDay}>
+              <XAxis
+                dataKey="date"
+                tick={{ fontSize: 11, fill: '#a8a29e' }} 
+                axisLine={false}
+                tickLine={false}
+              />
+              <Tooltip
+                contentStyle={{ fontSize: 12, borderRadius: 8, border: '0.5px solid #e7e5e4' }} 
+               />
+              <Line 
+                type="monotype" 
+                dataKey="count" 
+                stroke="#3b82f6" 
+                strokeWidth={2} 
+                dot={{ r: 3, fill: '#3b82f6' }} 
+                activeDot={{ r: 5 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
 
-      {/* Status overview - circle chart */}
-        <div className='border border-gray-300'>
-          <h1>Status overview</h1>
+        {/* pie chart */}
+        <div className='min-w-md border border-gray-300 p-4 rounded-2xl p-5'>
+          <h1 className='text-sm font-semibold text-stone-800 mb-4'>Status overview</h1>
+
+          <ResponsiveContainer width="100%" height={220}>
+            <PieChart>
+              <Pie
+                data={statusCounts}
+                dataKey="value"
+                nameKey="name"
+                outerRadius={80}
+                innerRadius={40}
+                paddingAngle={3}
+                >
+                  {statusCounts.map((entry, index) => (
+                    <Cell key={index} fill={COLORS[index]} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{ fontSize: 12, borderRadius: 8, border: '0.5px solid #e7e5e4' }}
+                />
+                <Legend
+                  iconType='circle'
+                  iconSize={8}
+                  wrapperStyle={{ fontSize: 12, color: '#78716c'}}
+                />
+            </PieChart>
+          </ResponsiveContainer>
         </div>
-      </div>
+      
     </div>
   )
 }

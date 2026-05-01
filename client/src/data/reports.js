@@ -18,7 +18,7 @@ export const reports = [
     category: "Drainage",
     location: "Riverside Walk",
     author: "Sarak.K",
-    date: "2026-04-26",
+    date: "2026-04-27",
   },
   {
     id: "RPN-1003",
@@ -48,7 +48,7 @@ export const reports = [
     category: "Pothole",
     location: "Sunrise School Road",
     author: "James.R",
-    date: "2026-04-23",
+    date: "2026-04-21",
   },
   {
     id: "RPN-1006",
@@ -58,7 +58,7 @@ export const reports = [
     category: "Drainage",
     location: "Market Square",
     author: "Olivia.M",
-    date: "2026-04-22",
+    date: "2026-04-21",
   },
   {
     id: "RPN-1007",
@@ -88,7 +88,7 @@ export const reports = [
     category: "Pothole",
     location: "Oak Street",
     author: "Noah.S",
-    date: "2026-04-19",
+    date: "2026-04-20",
   },
   {
     id: "RPN-1010",
@@ -98,6 +98,6 @@ export const reports = [
     category: "Drainage",
     location: "City Mall Road",
     author: "Emma.L",
-    date: "2026-04-18",
+    date: "2026-04-20",
   },
 ]
