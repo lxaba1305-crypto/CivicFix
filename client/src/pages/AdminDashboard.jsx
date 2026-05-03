@@ -4,7 +4,7 @@ import ReportChart from '../components/ReportChart';
 import StatsCard from '../components/StatsCard';
 import { reports } from '../data/reports';
 
-function AdminDasboard() {
+function AdminDashboard() {
   return (
     <div className='max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8'>
 
@@ -31,4 +31,4 @@ function AdminDasboard() {
   )
 }
 
-export default AdminDasboard
+export default AdminDashboard;

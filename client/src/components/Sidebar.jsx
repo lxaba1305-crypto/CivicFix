@@ -12,7 +12,7 @@ const navItems = [
     label: "Reports",
     //icon: 
     badge: reports.filter(r => r.status === "pending").length,
-    path: "/reports",
+    path: "/report",
   },
   {
     label: "Users",
@@ -52,7 +52,7 @@ function Sidebar() {
               {item.icon}
               {item.label}
             </span>
-            
+
             {item.badge > 0 && (
               <span className="text-xs bg-amber-100 text-amber-700 rounded-full px-2 py-0.5">
                 {item.badge}

@@ -1,18 +1,28 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import AdminDasboard from './pages/AdminDasboard';
+import AdminDashboard from './pages/AdminDashboard';
 import Sidebar from './components/Sidebar';
+import Navbar from './components/Navbar';
+
+import ReportCard from './components/ReportCard';
 
 function App() {
   return (
     <div className='flex h-screen overflow-hidden'>
       <Sidebar/>
 
-      <main className='flex-1 bg-stone-50 overflow-y-auto'>
-        <Routes>
-          <Route path='/' element={<AdminDasboard />} /> 
-        </Routes>
-      </main>
+      <div className='flex-1 flex flex-col overflow-hidden'>
+        <Navbar title='Admin' notificationCount={4} />
+
+        <main className='flex-1 bg-stone-50 overflow-y-auto'>
+          <Routes>
+            <Route path='/' element={<AdminDashboard />} />
+            <Route path='/report' element={<ReportCard />} />
+          </Routes>
+        </main>
+      </div>
+
+      
     </div>
   )
 }
