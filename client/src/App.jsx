@@ -16,8 +16,8 @@ function App() {
 
         <main className='flex-1 bg-stone-50 overflow-y-auto'>
           <Routes>
+            {/* ADMIN */}
             <Route path='/' element={<AdminDashboard />} />
-            <Route path='/report' element={<ReportCard />} />
           </Routes>
         </main>
       </div>

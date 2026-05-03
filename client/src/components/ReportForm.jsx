@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const ReportForm = ({ onSubmit }) => {
+export default ReportForm = ({ onSubmit }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');

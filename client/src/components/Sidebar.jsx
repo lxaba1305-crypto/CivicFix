@@ -1,28 +1,26 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { reports } from '../data/reports';
+import { MdOutlineDashboard, MdOutlineInsertDriveFile } from "react-icons/md";
+import { LuUsers } from "react-icons/lu";
+import { MdLogout } from "react-icons/md";
 
 const navItems = [
   {
     label: "Dashboard",
-    //icon: 
+    icon: <MdOutlineDashboard />, 
     path: "/",
   },
   {
     label: "Reports",
-    //icon: 
+    icon: <MdOutlineInsertDriveFile />,
     badge: reports.filter(r => r.status === "pending").length,
     path: "/report",
   },
   {
     label: "Users",
-    //icon: 
+    icon: <LuUsers />,
     path: "/users"
-  },
-  {
-    label: "Settings",
-    //icon: 
-    path: "/settings"
   },
 ]
 
@@ -72,7 +70,9 @@ function Sidebar() {
           <span className="text-xs text-stone-400">admin@roadalert.com</span>
         </div>
         <div>
-          <span className='text-sm font-medium text-stone-700'>logout</span>
+          <span className='text-sm font-medium text-stone-700'>
+            <MdLogout />
+          </span>
         </div>
       </div>
 

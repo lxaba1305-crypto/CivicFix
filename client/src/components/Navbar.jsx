@@ -1,4 +1,5 @@
 import React from 'react';
+import { MdNotificationsNone } from "react-icons/md";
 
 function Navbar({ title = "RoadAlert", user, onNew, notificationCount = 0 }) {
   return (
@@ -31,7 +32,7 @@ function Navbar({ title = "RoadAlert", user, onNew, notificationCount = 0 }) {
           {/* Notifications */}
           <div className="relative">
             <button className="w-8 h-8 flex items-center justify-center rounded-lg border border-stone-200 bg-white hover:bg-stone-50 transition">
-              Notif.
+              <MdNotificationsNone />
             </button>
             {notificationCount > 0 && (
               <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-medium rounded-full flex items-center justify-center leading-none">
