@@ -26,6 +26,14 @@ return (
           <Link to="/login" className="px-5 py-2.5 text-sm font-medium border border-white text-white rounded-lg hover:bg-white hover:text-stone-800 transition">
             Sign In
           </Link>
+
+          {/* PRIMARY DEMO BUTTON */}
+          <Link
+            to='/dashboard'
+            className='px-6 py-3 text-sm font-medium bg-green-500 text-white rounded-lg hover:bg-green-600 transition w-52 text-center' 
+          >
+            Demo
+          </Link>
       </div>
 
         </div>

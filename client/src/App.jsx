@@ -15,7 +15,6 @@ function App() {
   const [showIntro, setShowIntro] = useState(true);
   return (
   <>
-
    {showIntro && (
     <WelcomeScreen onFinish={() => setShowIntro(false)} />
     )}
