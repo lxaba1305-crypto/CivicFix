@@ -1,5 +1,6 @@
 
 import { Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
 import AdminDashboard from './pages/AdminDashboard';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
@@ -7,12 +8,19 @@ import HomePage from './pages/HomePage';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import UserDashboard from './pages/UserDashboard';
+import WelcomeScreen from './pages/WelcomeScreen';
 
 
 function App() {
+  const [showIntro, setShowIntro] = useState(true);
   return (
-   <Routes>
+  <>
 
+   {showIntro && (
+    <WelcomeScreen onFinish={() => setShowIntro(false)} />
+    )}
+
+    <Routes>
       {/* PUBLIC — no shell */}
       <Route path='/' element={<HomePage />} />
       <Route path='/login' element={<Login />} />
@@ -43,6 +51,7 @@ function App() {
         </div>
       } />
     </Routes>
+    </>
   )
 }
 

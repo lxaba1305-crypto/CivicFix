@@ -1,1 +1,26 @@
 @import "tailwindcss";
+
+@keyframes netflixZoom {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+        letter-spacing: 0.2em;
+}
+40% {
+        transform: scale(1.2);
+        opacity: 1;
+        letter-spacing: 0.3em;
+    }
+    70% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.6);
+        opacity: 0;
+    }
+}
+
+.netflix-animation {
+    animation: netflixZoom 3s ease-in-out forwards;
+}
