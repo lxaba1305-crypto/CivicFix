@@ -4,6 +4,7 @@ import { reports } from '../data/reports';
 import { MdOutlineDashboard, MdOutlineInsertDriveFile } from "react-icons/md";
 import { LuUsers } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
+import logo from '../assets/logo.png';
 
 const navItems = [
   {
@@ -26,11 +27,11 @@ const navItems = [
 
 function Sidebar() {
   return (
-    <div className="h-screen w-56 bg-white border-r border-stone-200 flex flex-col">
+    <div className="h-screen w-60 bg-white border-r border-stone-200 flex flex-col">
 
       {/* LOGO */}
-      <div className="flex items-center gap-2 px-5 py-5 border-b border-stone-100">
-        <span className="text-sm font-medium text-stone-800">LOGO</span>
+      <div className="flex justify-center items-center border-b border-stone-100">
+        <img src={logo} alt='CivicFix Logo' className='w-40 h-40' />
       </div>
 
       {/* NAV */}
@@ -70,9 +71,9 @@ function Sidebar() {
           <span className="text-xs text-stone-400">admin@civicfix.com</span>
         </div>
         <div>
-          <span className='text-sm font-medium text-stone-700'>
-            <MdLogout />
-          </span>
+          <button className='p-2 rounded-md text-red-500 hover:bg-red-100 hover:text-red-700 transition'>
+            <MdLogout className='h-5 w-5' />
+          </button>
         </div>
       </div>
 
