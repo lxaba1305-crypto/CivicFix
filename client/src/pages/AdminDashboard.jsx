@@ -8,8 +8,8 @@ function AdminDashboard() {
     <div className='max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8'>
 
       <div className='flex items-center justify-between'>
-        <h1 className='text-xl font-medium text-stone-800'>Overview</h1>
-        <p className='text-xs text-green-700 border-green-50 bg-green-200 rounded-full px-3 py-1'>April 2026</p> 
+        <h1 className='text-xl font-medium text-stone-800'>Admin Overview</h1>
+        <p className='text-xs text-green-700 border-green-50 bg-green-200 rounded-full px-3 py-1'>May 2026</p> 
       </div>
 
       <hr className='border-0 border-t border-stone-200 '/>

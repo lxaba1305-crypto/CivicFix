@@ -1,33 +1,14 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { reports } from '../data/reports';
 import { MdOutlineDashboard, MdOutlineInsertDriveFile, MdClose, MdMenu } from "react-icons/md";
 import { LuUsers } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
 import logo from '../assets/logo.png';
 
-const navItems = [
-  {
-    label: "Dashboard",
-    icon: <MdOutlineDashboard />, 
-    path: "/",
-  },
-  {
-    label: "Reports",
-    icon: <MdOutlineInsertDriveFile />,
-    badge: reports.filter(r => r.status === "pending").length,
-    path: "/report",
-  },
-  {
-    label: "Users",
-    icon: <LuUsers />,
-    path: "/users"
-  },
-]
-
-const NavItems = ({ onNavigate }) => (
+const NavItems = ({ items, onNavigate }) => (
     <>
-    {navItems.map((item) => (
+    {items.map((item) => (
       <NavLink
         key={item.label}
         to={item.path}
@@ -36,11 +17,11 @@ const NavItems = ({ onNavigate }) => (
           `flex items-center justify-between px-3 rounded-lg text-sm transition w-full
           ${isActive
             ? 'bg-green-50 text-green-700 font-medium'
-            : 'text-stone-500 hover:bg-stone-50 hover:text-stone-700'
+            : 'text-stone-500 hover:bg-green-50 hover:text-green-700'
           }` 
         }
       >
-        <span className='flex items-center gap-2'>
+        <span className='flex items-center gap-2 py-1.5'>
           {item.icon}
           {item.label}
         </span>
@@ -54,33 +35,70 @@ const NavItems = ({ onNavigate }) => (
     </>
   );
 
-function Sidebar() {
+function Sidebar({ role, setRole }) {
   const [open, setOpen] = useState(false);
 
+  const navItems = [
+  {
+    label: "Dashboard",
+    icon: <MdOutlineDashboard />, 
+    path: role === "admin" ? "/admin" : "/dashboard",
+  },
+  {
+    label: "Reports",
+    icon: <MdOutlineInsertDriveFile />,
+    badge: reports.filter(r => r.status === "pending").length,
+    path: "/reports",
+  },
+  ...(role === "admin"
+    ? [
+        {
+          label: "Users",
+          icon: <LuUsers />,
+          path: "/users"
+        },
+      ] : []
+  ),
+]
 
   return (
     <>
     <div className="hidden md:flex h-screen w-60 bg-white border-r border-stone-200 shrink-0 flex-col">
       {/* LOGO */}
       <div className="flex justify-center items-center border-b border-stone-100">
-        <img src={logo} alt='CivicFix Logo' className='w-40 h-40' />
+        <img src={logo} alt='CivicFix Logo' className='w-15 h-15' />
+        CivicFix
       </div>
       {/* NAV */}
-      <nav className="flex flex-col gap-1 px-3 py-4 flex-1">
-        <NavItems />
+      <nav className="flex flex-col gap-1 px-3 py-8 flex-1">
+        <NavItems items={navItems} onNavigate={() => setOpen(false)} />
       </nav>
+
+      {/* temporary button to view user and admin dashboard */}
+      <button
+        onClick={() => setRole(role === "admin" ? "user" : "admin")}
+        className="text-xs text-green-600 hover:underline"
+      >
+        Switch to {role === "admin" ? "User" : "Admin"}
+      </button>
+
       {/* BOTTOM */}
       <div className='px-4 py-4 border-t border-stone-100 flex items-center gap-3'>
         <div className='w-7 h-7 rounded-full bg-green-100 text-green-700 text-xs font-medium flex items-center justify-center'>
           AD
         </div>
         <div className='flex flex-col flex-1'>
-          <span className='text-xs font-medium text-stone-700'>Admin</span>
-          <span className='text-xs text-stone-400'>admin@civicfix.com</span>
+          <span className='text-xs font-medium text-stone-700'>
+            {role === "admin" ? "Admin" : "User"}
+          </span>
+          <span className='text-xs text-stone-400'>
+            {role === "admin" ? "admin@civicfix.com" : "user@civicfix.com"} 
+          </span>
         </div>
         <button className='p-2 rounded-md text-red-500 hover:bg-red-100 transition'>
           <MdLogout className='h-5 w-5' />
         </button>
+
       </div>
     </div>
 
