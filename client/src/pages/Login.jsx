@@ -16,7 +16,7 @@ function Login() {
 
                 <div className="flex items-center gap-2 mb-6">
                     <div className="w-2 h-2 rounded bg-green-600" />
-                    <span className="text-sm font-medium text-stone-800">RoadAlert</span>
+                    <span className="text-sm font-medium text-stone-800">CivicFix</span>
                 </div>
 
                 <h1 className="text-base font-medium text-stone-800 ">Welcome Back</h1>
