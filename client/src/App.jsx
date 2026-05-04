@@ -71,7 +71,7 @@ function App() {
           <div className='flex-1 flex flex-col overflow-hidden'>
             <Navbar title='Reports' />
             <main className='flex-1 bg-stone-50 overflow-y-auto'>
-              <ReportsPage />
+              <ReportsPage role={role} />
             </main>
           </div>
         </div>

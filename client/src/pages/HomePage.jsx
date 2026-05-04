@@ -9,7 +9,7 @@ return (
 
         <div className="flex items-center gap-2 mb-6">
           <div className="w-2 h-2 rounded-full bg-green-400"/>
-          <span className="text-lg text-white">CivicFix</span>
+          <span className="text-lg font-bold text-white">CivicFix</span>
           </div>
 
         <h1 className="text-4xl text-white text-center max-w-lg leading-tight">

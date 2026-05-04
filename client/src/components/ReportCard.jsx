@@ -1,4 +1,3 @@
-
 import { GoTag } from "react-icons/go";
 import { CiLocationOn, CiCalendarDate } from "react-icons/ci";
 import { BsPerson } from "react-icons/bs";
@@ -35,7 +34,6 @@ function ReportCard({ report, role }) {
               <p className='flex items-center gap-2 truncate'><BsPerson />{report.author}</p>
               <p className='flex items-center gap-2 text-right'><CiCalendarDate />{report.date}</p>
           </div>
-
 
           {/* Admin only actions */}
           {role === "admin" && (

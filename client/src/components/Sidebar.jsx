@@ -85,7 +85,7 @@ function Sidebar({ role, setRole }) {
       {/* BOTTOM */}
       <div className='px-4 py-4 border-t border-stone-100 flex items-center gap-3'>
         <div className='w-7 h-7 rounded-full bg-green-100 text-green-700 text-xs font-medium flex items-center justify-center'>
-          {role === "AD" ? "AD" : "UD"}
+          {role === "admin" ? "AD" : "UD"}
         </div>
         <div className='flex flex-col flex-1'>
           <span className='text-xs font-medium text-stone-700'>
@@ -118,7 +118,9 @@ function Sidebar({ role, setRole }) {
         {/* DRAWER */}
         <div className='relative w-64 bg-white h-full flex flex-col shadow-lg mt-14'>
           <nav className='flex flex-col gap-1 px-3 py-4 flex-1'>
-            <NavItems onNavigate={() => setOpen(false)} />
+            <NavItems 
+              items={navItems}
+              onNavigate={() => setOpen(false)} />
           </nav>
 
           {/* BOTTOM */}
