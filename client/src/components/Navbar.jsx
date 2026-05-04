@@ -7,7 +7,7 @@ function Navbar({ title = "RoadAlert", user, onNew, notificationCount = 0 }) {
       <div className="w-full flex items-center justify-between gap-4">
 
         {/* LEFT — logo */}
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
           <div className="w-2 h-2 rounded-full bg-green-600" />
           <span className="text-sm font-medium text-stone-800">{title}</span>
         </div>
@@ -20,7 +20,7 @@ function Navbar({ title = "RoadAlert", user, onNew, notificationCount = 0 }) {
         />
 
         {/* RIGHT — actions */}
-        <div className="flex items-center gap-3 flex-shrink-0">
+          <div className="flex items-center gap-3 shrink-0">
 
           <button
             onClick={onNew}
@@ -42,7 +42,7 @@ function Navbar({ title = "RoadAlert", user, onNew, notificationCount = 0 }) {
           </div>
 
           {/* Avatar */}
-          <div className="w-7 h-7 rounded-full bg-green-100 border border-green-200 flex items-center justify-center text-[11px] font-medium text-green-800 flex-shrink-0">
+          <div className="w-7 h-7 rounded-full bg-green-100 border border-green-200 flex items-center justify-center text-[11px] font-medium text-green-800 shrink-0">
             {user?.email ? user.email.slice(0,2).toUpperCase() : 'AD'}
           </div>
 

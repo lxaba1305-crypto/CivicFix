@@ -63,7 +63,7 @@ function ReportChart() {
         </div>
 
         {/* pie chart */}
-        <div className='min-w-md border border-gray-300 p-4 rounded-2xl p-5'>
+        <div className='min-w-md border border-gray-300 rounded-2xl p-5'>
           <h1 className='text-sm font-semibold text-stone-800 mb-4'>Status overview</h1>
 
           <ResponsiveContainer width="100%" height={220}>
