@@ -101,3 +101,69 @@ export const reports = [
     date: "2026-04-20",
   },
 ]
+
+export const users = [
+  { 
+    id: 'USR-001', 
+    name: 'Khanya Mokoena',  
+    email: 'k.mokoena@email.com',   
+    role: 'user',  
+    reports: 14, 
+    status: 'active',   
+    joined: 'Jan 2026' 
+  },
+  { 
+    id: 'USR-002', 
+    name: 'Thabo Nkosi',     
+    email: 'thabo.n@email.com',     
+    role: 'admin', 
+    reports: 7,  
+    status: 'active',   
+    joined: 'Nov 2025' 
+  },
+  { 
+    id: 'USR-003', 
+    name: 'Zanele Dlamini',  
+    email: 'zanele.d@email.com',    
+    role: 'user',  
+    reports: 9,  
+    status: 'inactive', 
+    joined: 'Feb 2026' 
+  },
+  { 
+    id: 'USR-004', 
+    name: 'Lebo Petersen',   
+    email: 'lebo.p@email.com',      
+    role: 'user',  
+    reports: 21, 
+    status: 'active',   
+    joined: 'Mar 2026' 
+  },
+  { 
+    id: 'USR-005', 
+    name: 'Nomsa van Wyk',   
+    email: 'nomsa.vw@email.com',    
+    role: 'admin', 
+    reports: 3,  
+    status: 'active',   
+    joined: 'Apr 2026'
+  },
+  { 
+    id: 'USR-006', 
+    name: 'Sipho Dube',      
+    email: 'sipho.d@email.com',     
+    role: 'user',  
+    reports: 5,  
+    status: 'active',   
+    joined: 'Apr 2026' 
+  },
+  { 
+    id: 'USR-007', 
+    name: 'Ayanda Botha',    
+    email: 'ayanda.b@email.com',    
+    role: 'user',  
+    reports: 0,  
+    status: 'inactive', 
+    joined: 'May 2026' 
+  },
+];

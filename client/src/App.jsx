@@ -10,6 +10,7 @@ import Signup from './pages/Signup';
 import UserDashboard from './pages/UserDashboard';
 import WelcomeScreen from './pages/WelcomeScreen';
 import ReportsPage from './pages/ReportsPage';
+import UsersPage from './pages/UsersPage';
 
 function App() {
   const [showIntro, setShowIntro] = useState(true);
@@ -34,12 +35,12 @@ function App() {
     )}
 
     <Routes>
-      {/* PUBLIC — no shell */}
+      {/* PUBLIC */}
       <Route path='/' element={<HomePage />} />
       <Route path='/login' element={<Login />} />
       <Route path='/signup' element={<Signup />} />
 
-      {/* APP — with shell */}
+      {/* ADMIN DASHBOARD ROUTE */}
       <Route path='/admin' element={
         <div className='flex h-screen overflow-hidden'>
           <Sidebar role={role} setRole={handleRoleChange} />
@@ -52,6 +53,7 @@ function App() {
         </div>
       } />
 
+      {/* USER DASHBOARD ROUTE */}
       <Route path='/dashboard' element={
         <div className='flex h-screen overflow-hidden'>
           <Sidebar role={role} setRole={handleRoleChange} />
@@ -65,6 +67,7 @@ function App() {
         } 
       />
 
+      {/* REPORT PAGE ROUTE */}
       <Route path='/reports' element={
         <div className='flex h-screen overflow-hidden'>
           <Sidebar role={role} setRole={handleRoleChange} />
@@ -77,6 +80,18 @@ function App() {
         </div>
         } 
       />
+
+      <Route path='/users' element={
+        <div className='flex h-screen overflow-hidden'>
+          <Sidebar role={role} setRole={handleRoleChange} />
+          <div className='flex-1 flex flex-col overflow-hidden'>
+            <Navbar title='Users' />
+            <main className='flex-1 bg-stone-50 overflow-y-auto'>
+              <UsersPage />
+            </main>
+          </div>
+        </div>
+      } />
     </Routes>
     </>
   )

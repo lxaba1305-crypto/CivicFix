@@ -35,8 +35,8 @@ function ReportChart() {
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
       
-        {/* line chart */}
-        <div className='min-w-xl border border-gray-300 p-4 rounded-xl'>
+        {/* LINE CHART */}
+        <div className='bg-white border border-stone-200 p-5 rounded-xl'>
           <h1 className='text-sm font-semibold text-stone-800 mb-4'>Reports this week</h1>
 
           <ResponsiveContainer width={"100%"} height={220}>
@@ -51,7 +51,7 @@ function ReportChart() {
                 contentStyle={{ fontSize: 12, borderRadius: 8, border: '0.5px solid #e7e5e4' }} 
                />
               <Line 
-                type="monotype" 
+                type="monotone" 
                 dataKey="count" 
                 stroke="#3b82f6" 
                 strokeWidth={2} 
@@ -63,7 +63,7 @@ function ReportChart() {
         </div>
 
         {/* pie chart */}
-        <div className='min-w-md border border-gray-300 rounded-2xl p-5'>
+        <div className='bg-white border border-stone-200 rounded-xl p-5'>
           <h1 className='text-sm font-semibold text-stone-800 mb-4'>Status overview</h1>
 
           <ResponsiveContainer width="100%" height={220}>
