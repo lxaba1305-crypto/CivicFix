@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { reports } from '../data/reports';
 import { MdOutlineDashboard, MdOutlineInsertDriveFile, MdClose, MdMenu } from "react-icons/md";
@@ -25,10 +25,7 @@ const navItems = [
   },
 ]
 
-function Sidebar() {
-  const [open, setOpen] = useState(false);
-
-  const NavItems = ({ onNavigate }) => (
+const NavItems = ({ onNavigate }) => (
     <>
     {navItems.map((item) => (
       <NavLink
@@ -57,10 +54,13 @@ function Sidebar() {
     </>
   );
 
+function Sidebar() {
+  const [open, setOpen] = useState(false);
+
 
   return (
     <>
-    <div className="hidden md:flex h-screen w-60 bg-white border-r border-stone-200 flex-shrink-0 flex-col">
+    <div className="hidden md:flex h-screen w-60 bg-white border-r border-stone-200 shrink-0 flex-col">
       {/* LOGO */}
       <div className="flex justify-center items-center border-b border-stone-100">
         <img src={logo} alt='CivicFix Logo' className='w-40 h-40' />

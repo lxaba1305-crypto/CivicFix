@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { GoTag } from "react-icons/go";
 import { CiLocationOn, CiCalendarDate } from "react-icons/ci";
 import { BsPerson } from "react-icons/bs";
@@ -16,7 +16,7 @@ function ReportCard({ report }) {
               <h1 className='text-sm font-medium text-stone-800'>{report.title}</h1>
             </div>
 
-            <span className={`text-xs rounded-full font-meduim p-2 flex-shrink-0
+            <span className={`text-xs rounded-full font-meduim p-2 shrink-0
               ${report.status === 'pending' ? 'bg-yellow-50 text-yellow-700' : ''}
               ${report.status === 'in progress' ? 'bg-blue-50 text-blue-700' : ''}
               ${report.status === 'resolved' ? 'bg-green-50 text-green-700' : ''}
