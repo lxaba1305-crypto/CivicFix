@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { reports } from '../data/reports';
 import { Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, Cell, Legend } from 'recharts';
 

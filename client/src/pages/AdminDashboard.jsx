@@ -1,4 +1,3 @@
-import React from 'react'
 import ReportCard from '../components/ReportCard';
 import ReportChart from '../components/ReportChart';
 import StatsCard from '../components/StatsCard';

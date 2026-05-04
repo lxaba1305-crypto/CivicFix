@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Routes, Route } from 'react-router-dom';
 import AdminDashboard from './pages/AdminDashboard';
 import Sidebar from './components/Sidebar';
@@ -8,26 +8,41 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import UserDashboard from './pages/UserDashboard';
 
-import ReportCard from './components/ReportCard';
 
 function App() {
   return (
-    <div className='flex h-screen overflow-hidden'>
-      <Sidebar/>
+   <Routes>
 
-      <div className='flex-1 flex flex-col overflow-hidden'>
-        <Navbar title='Admin' notificationCount={4} />
+      {/* PUBLIC — no shell */}
+      <Route path='/' element={<HomePage />} />
+      <Route path='/login' element={<Login />} />
+      <Route path='/signup' element={<Signup />} />
 
-        <main className='flex-1 bg-stone-50 overflow-y-auto'>
-          <Routes>
-            {/* ADMIN */}
-            <Route path='/' element={<AdminDashboard />} />
-          </Routes>
-        </main>
-      </div>
+      {/* APP — with shell */}
+      <Route path='/admin' element={
+        <div className='flex h-screen overflow-hidden'>
+          <Sidebar />
+          <div className='flex-1 flex flex-col overflow-hidden'>
+            <Navbar title='Admin' notificationCount={4} />
+            <main className='flex-1 bg-stone-50 overflow-y-auto'>
+              <AdminDashboard />
+            </main>
+          </div>
+        </div>
+      } />
 
-      
-    </div>
+      <Route path='/dashboard' element={
+        <div className='flex h-screen overflow-hidden'>
+          <Sidebar />
+          <div className='flex-1 flex flex-col overflow-hidden'>
+            <Navbar title='CivicFix' />
+            <main className='flex-1 bg-stone-50 overflow-y-auto'>
+              <UserDashboard />
+            </main>
+          </div>
+        </div>
+      } />
+    </Routes>
   )
 }
 

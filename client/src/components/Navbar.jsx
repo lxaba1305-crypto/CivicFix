@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { MdNotificationsNone } from "react-icons/md";
 
 function Navbar({ title = "RoadAlert", user, onNew, notificationCount = 0 }) {

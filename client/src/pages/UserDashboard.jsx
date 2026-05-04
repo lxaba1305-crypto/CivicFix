@@ -1,5 +1,4 @@
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
+
 import ReportForm from "../components/ReportForm";
 import ReportCard from "../components/ReportCard";
 import { useState } from "react";
@@ -20,18 +19,16 @@ const UserDashboard = () => {
   }
 
   return (
-    <div>
-      <Navbar />
-      <div className="dashboard-container">
-        <Sidebar />
-        <div className="dashboard-content">
-          <h2>Welcome to your Dashboard</h2>
-          <ReportForm onSubmit={handleSubmit} />
-          {reports.map((report) => (
-            <ReportCard key={report.id} report={report} />
-          ))}
-        </div>
+    <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8">
+      <h2 className="text-xl font-medium text-stone-800">Welcome to your Dashboard</h2>
+      <ReportForm onSubmit={handleSubmit} />
+      <div className="grid grid-cols-3 gap-4">
+      {reports.map((report) => (
+        <ReportCard key={report.id} report={report} />
+      ))}
       </div>
     </div>
   );
 }
+
+export default UserDashboard;
