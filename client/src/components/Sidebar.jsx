@@ -67,7 +67,7 @@ function Sidebar() {
         </div>
         <div className="flex flex-col">
           <span className="text-xs font-medium text-stone-700">Admin</span>
-          <span className="text-xs text-stone-400">admin@roadalert.com</span>
+          <span className="text-xs text-stone-400">admin@civicfix.com</span>
         </div>
         <div>
           <span className='text-sm font-medium text-stone-700'>
