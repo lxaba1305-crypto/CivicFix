@@ -24,7 +24,7 @@ const UserDashboard = () => {
       <ReportForm onSubmit={handleSubmit} />
       <div className="grid grid-cols-3 gap-4">
       {reports.map((report) => (
-        <ReportCard key={report.id} report={report} />
+        <ReportCard key={report.id} report={report} role="user" />
       ))}
       </div>
     </div>

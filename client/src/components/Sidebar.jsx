@@ -85,7 +85,7 @@ function Sidebar({ role, setRole }) {
       {/* BOTTOM */}
       <div className='px-4 py-4 border-t border-stone-100 flex items-center gap-3'>
         <div className='w-7 h-7 rounded-full bg-green-100 text-green-700 text-xs font-medium flex items-center justify-center'>
-          AD
+          {role === "AD" ? "AD" : "UD"}
         </div>
         <div className='flex flex-col flex-1'>
           <span className='text-xs font-medium text-stone-700'>

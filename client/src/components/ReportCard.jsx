@@ -3,7 +3,7 @@ import { GoTag } from "react-icons/go";
 import { CiLocationOn, CiCalendarDate } from "react-icons/ci";
 import { BsPerson } from "react-icons/bs";
 
-function ReportCard({ report }) {
+function ReportCard({ report, role }) {
   return (
     <div> 
       <div className='flex flex-col gap-4 w-full bg-white border border-gray-300 rounded-xl p-5'>
@@ -36,16 +36,21 @@ function ReportCard({ report }) {
               <p className='flex items-center gap-2 text-right'><CiCalendarDate />{report.date}</p>
           </div>
 
-          <hr className='border-stone-300'/>
 
-          <div className='flex gap-4 mt-3 flex-wrap'>
-            <button className='flex-1 text-xs font-medium bg-green-50 text-green-700 border-green-200 hover:bg-green-100 rounded-lg px-4 py-2 transition'>
-              Mark as In Progress
-            </button>
-            <button className='text-xs font-medium px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition'>
-              Delete Report
-            </button>
-          </div>
+          {/* Admin only actions */}
+          {role === "admin" && (
+            <div>
+              <hr className='border-stone-300'/>
+              <div className='flex gap-4 mt-3 flex-wrap'>
+                <button className='flex-1 text-xs font-medium bg-green-50 text-green-700    border-green-200 hover:bg-green-100 rounded-lg px-4 py-2 transition'>
+                  Mark as In Progress
+                </button>
+                <button className='text-xs font-medium px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition'>
+                  Delete Report
+                </button>
+              </div>
+            </div>
+          )}
           
         </div>
       </div>
