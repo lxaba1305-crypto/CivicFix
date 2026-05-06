@@ -29,7 +29,7 @@ const ReportForm = ({ onSubmit }) => {
   const inputClass = "px-3 py-2 text-sm border border-stone-200 rounded-lg bg-stone-50 focus:outline-none focus:ring-2 focus:ring-green-400 focus:bg-white transition";
 
   return (
-    <div className="bg-white border border-stone-200 rounded-xl p-6 mb-6">
+    <div className="w-full bg-white border border-stone-200 rounded-xl p-6 mb-6">
       <h3 className="text-sm font-medium text-stone-800 mb-4">Report an Issue</h3>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">

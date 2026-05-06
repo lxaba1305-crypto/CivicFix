@@ -6,12 +6,12 @@ const CATEGORIES = ['All', ...new Set(reports.map(r => r.category))];
 const STATUSES = ['All', 'pending', 'in progress', 'resolved'];
 
 function ReportsPage({ role }) {
-  const [statusFilter, setStatusFilter] = useState('ALL');
-  const [categoryFilter, setCategoryFilter] = useState('ALL');
+  const [statusFilter, setStatusFilter] = useState('All');
+  const [categoryFilter, setCategoryFilter] = useState('All');
 
   const filtered = reports.filter(r => {
-    const matchStatus = statusFilter === 'ALL' || r.status === statusFilter;
-    const matchCategory = categoryFilter === 'ALL' || r.category === categoryFilter;
+    const matchStatus = statusFilter === 'All' || r.status === statusFilter;
+    const matchCategory = categoryFilter === 'All' || r.category === categoryFilter;
     return matchStatus && matchCategory;
   })
 

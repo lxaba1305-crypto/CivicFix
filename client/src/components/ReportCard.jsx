@@ -12,7 +12,7 @@ function ReportCard({ report, role }) {
           <div className='flex items-center justify-between gap-2'>
             <div className='flex flex-col gap-1'>
               <p className='text-xs text-stone-500'>{report.id}</p>
-              <h1 className='text-sm font-medium text-stone-800'>{report.title}</h1>
+              <h1 className='text-sm font-medium text-stone-800 wrap-break-word'>{report.title}</h1>
             </div>
 
             <span className={`text-xs rounded-full font-meduim p-2 shrink-0
@@ -24,7 +24,7 @@ function ReportCard({ report, role }) {
             </span>
           </div>
 
-          <div className='text-xs text-stone-500 my-4'>
+          <div className='text-xs text-stone-500 my-4 wrap-break-words'>
             {report.description}
           </div>
 
