@@ -23,6 +23,10 @@ const UserDashboard = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8">
+      <div onClick={() => navigate(-1)} className="flex items-center gap-3 cursor-pointer text-sm text-stone-600 hover:text-green-600 transition">
+        <FaArrowLeft/>back
+      </div>
+      <div>
       <h2 className="text-xl font-medium text-stone-800">Welcome to your Dashboard</h2>
       <ReportForm onSubmit={handleSubmit} />
       </div>
