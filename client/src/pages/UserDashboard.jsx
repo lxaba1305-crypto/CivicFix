@@ -1,9 +1,12 @@
-
 import ReportForm from "../components/ReportForm";
 import ReportCard from "../components/ReportCard";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
 
 const UserDashboard = () => {
+  const navigate = useNavigate();
+
   const [reports, setReports] = useState([
     {
       id: 1,
@@ -20,6 +23,9 @@ const UserDashboard = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8">
+      <div onClick={() => navigate(-1)} className="flex items-center gap-3 cursor-pointer text-sm text-stone-600 hover:text-green-600 transition">
+        <FaArrowLeft/>back
+      </div>
       <h2 className="text-xl font-medium text-stone-800">Welcome to your Dashboard</h2>
       <ReportForm onSubmit={handleSubmit} />
       <div className="grid grid-cols-3 gap-4">
