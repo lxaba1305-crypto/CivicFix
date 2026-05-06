@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import { Link } from 'react-router-dom';
+import BackButton from '../buttons/BackButton';
 
 function Signup() {
     const [name, setName] = useState('');
@@ -19,6 +20,7 @@ function Signup() {
 
     return (
         <div className="min-h-screen bg-stone-50 flex items-center justify-center px-4">
+            <BackButton />
                     <div className="w-full max-w-sm bg-white border border-stone-200 rounded-xl p-8">
         
                         <div className="flex items-center gap-2 mb-6">

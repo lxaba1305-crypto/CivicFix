@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import ReportCard from '../components/ReportCard';
+import BackButton from '../buttons/BackButton';
 import { reports } from '../data/reports';
 
 const CATEGORIES = ['All', ...new Set(reports.map(r => r.category))];
@@ -17,6 +18,7 @@ function ReportsPage({ role }) {
 
   return (
     <div className='max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8'>
+      <BackButton />
       <div className='flex flex-col'>
         {role === "user" ? (
           <>

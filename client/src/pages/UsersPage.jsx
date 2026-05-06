@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { users as initialUsers } from '../data/reports';
 import { Link } from 'react-router-dom';
+import BackButton from '../buttons/BackButton';
 
 function getInitials(name) {
   return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
@@ -29,6 +30,7 @@ function UsersPage() {
 
   return (
     <div className='max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8'>
+      <BackButton />
 
       {/* HEADER */}
       <div className='flex items-center justify-between'>

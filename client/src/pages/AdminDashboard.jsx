@@ -1,6 +1,7 @@
 import ReportCard from '../components/ReportCard';
 import ReportChart from '../components/ReportChart';
 import StatsCard from '../components/StatsCard';
+import BackButton from '../buttons/BackButton';
 import { reports, users } from '../data/reports';
 import { Link } from 'react-router-dom';
 
@@ -19,6 +20,7 @@ const avatarColors = [
 function AdminDashboard() {
   return (
     <div className='max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8'>
+      <BackButton />
 
       <div className='flex items-center justify-between'>
         <div>
