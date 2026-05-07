@@ -76,9 +76,9 @@ const ReportForm = ({ onSubmit }) => {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium text-stone-500">Description</label>
+          <label className="text-xs font-medium text-stone-500">What is the issue?</label>
           <textarea
-            placeholder="Describe the issue you're reporting..."
+            placeholder="Describe the problem in detail..."
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className={inputClass + " resize-none h-24"}

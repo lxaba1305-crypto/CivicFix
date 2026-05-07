@@ -45,7 +45,7 @@ const UserDashboard = () => {
       <BackButton />
       
       <div>
-        <h2 className="text-xl font-medium text-stone-800">Welcome to your Dashboard</h2>
+        <h2 className="text-xl font-medium text-stone-800 mb-4">Welcome to your Dashboard</h2>
         <ReportForm onSubmit={handleSubmit} />
       </div>
 

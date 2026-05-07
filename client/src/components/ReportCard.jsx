@@ -9,11 +9,8 @@ function ReportCard({ report, role }) {
 
         {/* REPORTS */}
         <div>
-          <div className='flex items-center justify-between gap-2'>
-            <div className='flex flex-col gap-1'>
-              <p className='text-xs text-stone-500'>{report.id}</p>
-              <h1 className='text-sm font-medium text-stone-800 wrap-break-word'>{report.title}</h1>
-            </div>
+          <div className='flex items-center justify-between'>
+            <p className='text-xs text-stone-500'>RPN - 0{report.id}</p>
 
             <span className={`text-xs rounded-full font-meduim p-2 shrink-0
               ${report.status === 'pending' ? 'bg-yellow-50 text-yellow-700' : ''}
@@ -32,7 +29,10 @@ function ReportCard({ report, role }) {
               <p className='flex items-center gap-2'><GoTag />{report.category}</p>
               <p className='flex items-center gap-2 text-right'><CiLocationOn />{report.location}</p>
               <p className='flex items-center gap-2 truncate'><BsPerson />{report.full_name}</p>
-              <p className='flex items-center gap-2 text-right'><CiCalendarDate />{report.created_at}</p>
+              <p className='flex items-center gap-2 text-right'>
+                <CiCalendarDate />
+                {new Date(report.created_at).toISOString().split('T')[0]}
+              </p>
           </div>
 
           {/* Admin only actions */}
