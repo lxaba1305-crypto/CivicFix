@@ -31,8 +31,8 @@ function ReportCard({ report, role }) {
           <div className='grid grid-cols-2 gap-y-1 text-xs text-stone-500 mb-2'>
               <p className='flex items-center gap-2'><GoTag />{report.category}</p>
               <p className='flex items-center gap-2 text-right'><CiLocationOn />{report.location}</p>
-              <p className='flex items-center gap-2 truncate'><BsPerson />{report.author}</p>
-              <p className='flex items-center gap-2 text-right'><CiCalendarDate />{report.date}</p>
+              <p className='flex items-center gap-2 truncate'><BsPerson />{report.full_name}</p>
+              <p className='flex items-center gap-2 text-right'><CiCalendarDate />{report.created_at}</p>
           </div>
 
           {/* Admin only actions */}

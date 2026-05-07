@@ -1,4 +1,3 @@
-
 import { reports } from '../data/reports'
 
 const StatsCard = () => {
