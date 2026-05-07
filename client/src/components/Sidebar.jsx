@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { reports } from '../data/reports';
 import { MdOutlineDashboard, MdOutlineInsertDriveFile, MdClose, MdMenu } from "react-icons/md";
 import { LuUsers } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
 import logo from '../assets/logo.png';
+import { supabase } from '../supabaseClient';
 
 const NavItems = ({ items, onNavigate }) => (
     <>
@@ -37,6 +37,28 @@ const NavItems = ({ items, onNavigate }) => (
 
 function Sidebar({ role, setRole }) {
   const [open, setOpen] = useState(false);
+  const [reports, setReports] = useState([]);
+
+  useEffect(() => {
+    fetchReports();
+  }, []);
+
+  const fetchReports = async () => {
+    const { data, error } = await supabase
+      .from('Reports')
+      .select('*');
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    setReports(data || []);
+  };
+
+  const pendingCount = reports.filter(
+    r => r.status === 'pending'
+  ).length;
 
   const navItems = [
   {
@@ -47,7 +69,7 @@ function Sidebar({ role, setRole }) {
   {
     label: "Reports",
     icon: <MdOutlineInsertDriveFile />,
-    badge: reports.filter(r => r.status === "pending").length,
+    badge: pendingCount,
     path: "/reports",
   },
   ...(role === "admin"

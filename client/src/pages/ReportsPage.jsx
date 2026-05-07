@@ -1,24 +1,59 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
 import ReportCard from '../components/ReportCard';
 import BackButton from '../buttons/BackButton';
-import { reports } from '../data/reports';
 
-const CATEGORIES = ['All', ...new Set(reports.map(r => r.category))];
 const STATUSES = ['All', 'pending', 'in progress', 'resolved'];
 
 function ReportsPage({ role }) {
+  const [reports, setReports] = useState([]);
   const [statusFilter, setStatusFilter] = useState('All');
   const [categoryFilter, setCategoryFilter] = useState('All');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchReports();
+  }, []);
+
+  const fetchReports = async () => {
+    const { data, error } = await supabase
+      .from('Reports')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.log(error);
+      setLoading(false);
+      return;
+    }
+
+    setReports(data);
+    setLoading(false);
+  };
+
+  const CATEGORIES = [
+    'All',
+    ...new Set((reports ?? []).map(r => r.category))
+  ];
 
   const filtered = reports.filter(r => {
     const matchStatus = statusFilter === 'All' || r.status === statusFilter;
     const matchCategory = categoryFilter === 'All' || r.category === categoryFilter;
     return matchStatus && matchCategory;
-  })
+  });
+
+  if (loading) {
+    return (
+      <div className="p-6 text-sm text-stone-500">
+        Loading reports...
+      </div>
+    );
+  }
 
   return (
     <div className='max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8'>
       <BackButton />
+
       <div className='flex flex-col'>
         {role === "user" ? (
           <>
@@ -41,7 +76,9 @@ function ReportsPage({ role }) {
         >
           {STATUSES.map(s => (
             <option key={s} value={s}>
-              {s === 'All' ? 'All statuses' : s.charAt(0).toUpperCase() + s.slice(1)}
+              {s === 'All' 
+                ? 'All statuses' 
+                : s.charAt(0).toUpperCase() + s.slice(1)}
             </option>
           ))}
         </select>

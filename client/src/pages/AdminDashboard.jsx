@@ -2,7 +2,6 @@ import ReportCard from '../components/ReportCard';
 import ReportChart from '../components/ReportChart';
 import StatsCard from '../components/StatsCard';
 import BackButton from '../buttons/BackButton';
-import { reports, users } from '../data/reports';
 import { Link } from 'react-router-dom';
 
 function getInitials(name) {

@@ -1,5 +1,3 @@
-
-import { reports } from '../data/reports';
 import { Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, Cell, Legend } from 'recharts';
 
 function ReportChart() {
