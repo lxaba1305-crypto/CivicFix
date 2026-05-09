@@ -1,6 +1,28 @@
+import { useEffect, useState } from 'react';
+import { supabase } from '../supabaseClient';
 import { Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, Cell, Legend } from 'recharts';
 
-function ReportChart({ reports = [] }) {
+function ReportChart() {
+  const [reports, setReports] = useState([]);
+
+  useEffect(() => {
+    fetchReports();
+  }, []);
+
+  // FETCH FROM SUPABASE
+  const fetchReports = async () => {
+    const { data, error } = await supabase
+      .from('Reports')
+      .select('*');
+
+    if (error) {
+      console.log('Chart fetch error:', error.message);
+      return;
+    }
+
+    setReports(data || []);
+  };
+
   // REPORTS PER DAY (LINE CHART)
   const reportsPerDay = Object.values(
     reports.reduce((acc, report) => {
@@ -82,7 +104,7 @@ function ReportChart({ reports = [] }) {
                 innerRadius={40}
                 paddingAngle={3}
                 >
-                  {statusCounts.map((entry, index) => (
+                  {statusCounts.map((_, index) => (
                     <Cell key={index} fill={COLORS[index]} />
                   ))}
                 </Pie>
