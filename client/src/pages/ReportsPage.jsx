@@ -3,7 +3,7 @@ import { supabase } from '../supabaseClient';
 import ReportCard from '../components/ReportCard';
 import BackButton from '../buttons/BackButton';
 
-const STATUSES = ['All', 'pending', 'in progress', 'resolved'];
+const STATUSES = ['All', 'Pending', 'In Progress', 'Resolved'];
 
 function ReportsPage({ role }) {
   const [reports, setReports] = useState([]);
@@ -15,6 +15,7 @@ function ReportsPage({ role }) {
     fetchReports();
   }, []);
 
+  //FETCH REPORTS
   const fetchReports = async () => {
     const { data, error } = await supabase
       .from('Reports')
@@ -27,18 +28,61 @@ function ReportsPage({ role }) {
       return;
     }
 
-    setReports(data);
+    setReports(data || []);
     setLoading(false);
   };
 
+  //UPDATE STATUS
+  const updateStatus = async (id, newStatus) => {
+    const { error } = await supabase
+      .from('Reports')
+      .update({ status: newStatus })
+      .eq('id', id);
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    // REFRESH REPORTS
+    fetchReports();
+  };
+
+  // DELETE REPORT
+  const deleteReport = async (id) => {
+    const { error } = await supabase
+      .from('Reports')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    fetchReports();
+  };
+
+  // CATEGIRY FILTERS
   const CATEGORIES = [
     'All',
-    ...new Set((reports ?? []).map(r => r.category))
+    ...new Set(
+      (reports ?? [])
+      .map(r => r.category)
+      .filter(Boolean)
+    )
   ];
 
+  // FILTER REPORTS
   const filtered = reports.filter(r => {
-    const matchStatus = statusFilter === 'All' || r.status === statusFilter;
-    const matchCategory = categoryFilter === 'All' || r.category === categoryFilter;
+    const matchStatus =
+      statusFilter === 'All' ||
+      r.status?.toLowerCase() === statusFilter;
+
+    const matchCategory =
+      categoryFilter === 'All' || 
+      r.category === categoryFilter;
+
     return matchStatus && matchCategory;
   });
 
@@ -54,6 +98,7 @@ function ReportsPage({ role }) {
     <div className='max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8'>
       <BackButton />
 
+      {/* HEADER */}
       <div className='flex flex-col'>
         {role === "user" ? (
           <>
@@ -108,17 +153,27 @@ function ReportsPage({ role }) {
         )}
       </div>
 
+      {/* REPORTS */}
       {filtered.length > 0 ? (
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
         {filtered.map(report => (
-          <ReportCard key={report.id} report={report} role={role} />
+          <ReportCard 
+            key={report.id} 
+            report={report} 
+            role={role} 
+            updateStatus={updateStatus}
+            deleteReport={deleteReport}
+          />
         ))}
       </div>
       ) : (
         <div className='flex flex-col items-center justify-center py-20 text-stone-400 gap-2'>
           <p className='text-sm'>No reports match your filters.</p>
           <button
-            onClick={() => { setStatusFilter('All'); setCategoryFilter('All'); }}
+            onClick={() => {
+              setStatusFilter('All'); 
+              setCategoryFilter('All'); 
+            }}
             className='text-xs text-green-600 hover:text-green-700 transition'
           >
             Clear filters

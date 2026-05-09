@@ -1,8 +1,40 @@
-import { GoTag } from "react-icons/go";
-import { CiLocationOn, CiCalendarDate } from "react-icons/ci";
-import { BsPerson } from "react-icons/bs";
+import { GoTag } from 'react-icons/go';
+import { CiLocationOn, CiCalendarDate } from 'react-icons/ci';
+import { BsPerson } from 'react-icons/bs';
+import { supabase } from '../supabaseClient';
 
 function ReportCard({ report, role }) {
+  // UPDATE STATUS
+  const handleUpdateStatus = async (newStatus) => {
+    const { error } = await supabase
+      .from("Reports")
+      .update({ status: newStatus })
+      .eq("id", report.id);
+
+    if (error) {
+      console.log("Status update error:", error.message);
+      return;
+    }
+
+    // Refresh page so updated status appears immediately
+    window.location.reload();
+  };
+
+  // DELETE REPORT
+  const handleDeleteReport = async () => {
+    const { error } = await supabase
+      .from("Reports")
+      .delete()
+      .eq("id", report.id);
+
+    if (error) {
+      console.log("Delete error:", error.message);
+      return;
+    }
+
+    window.location.reload();
+  };
+
   return (
     <div> 
       <div className='flex flex-col gap-4 w-full bg-white border border-gray-300 rounded-xl p-5'>
@@ -21,6 +53,7 @@ function ReportCard({ report, role }) {
             </span>
           </div>
 
+          {/* DESCRIPTION */}
           <div className='text-xs text-stone-500 my-4 wrap-break-words'>
             {report.description}
           </div>
@@ -31,7 +64,9 @@ function ReportCard({ report, role }) {
               <p className='flex items-center gap-2 truncate'><BsPerson />{report.full_name}</p>
               <p className='flex items-center gap-2 text-right'>
                 <CiCalendarDate />
-                {new Date(report.created_at).toISOString().split('T')[0]}
+                {new Date(report.created_at)
+                  .toISOString()
+                  .split('T')[0]}
               </p>
           </div>
 
@@ -39,11 +74,36 @@ function ReportCard({ report, role }) {
           {role === "admin" && (
             <div>
               <hr className='border-stone-300'/>
+
               <div className='flex gap-4 mt-3 flex-wrap'>
-                <button className='flex-1 text-xs font-medium bg-green-50 text-green-700    border-green-200 hover:bg-green-100 rounded-lg px-4 py-2 transition'>
+                {/* IN PROGESS */}
+                <button
+                  onClick={() =>
+                    handleUpdateStatus('in progress')
+                  } 
+                  className='flex-1 text-xs font-medium bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 rounded-lg px-4 py-2 transition'>
                   Mark as In Progress
                 </button>
-                <button className='text-xs font-medium px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition'>
+
+                {/* RESOLVED */}
+                <button
+                  onClick={() => handleUpdateStatus('resolved')} 
+                  className='text-xs font-medium px-4 py-2 bg-green-50 text-green-600 hover:bg-green-100 rounded-lg transition'>
+                  Resolved Report
+                </button>
+
+                {/* Pending */}
+                <button
+                  onClick={() => handleUpdateStatus('pending')} 
+                  className='text-xs font-medium px-4 py-2 bg-yellow-50 text-yellow-600 hover:bg-yellow-100 rounded-lg transition'>
+                  Pending Report
+                </button>
+
+                {/* DELETE */}
+                <button
+                  onClick={handleDeleteReport}
+                  className='w-full text-xs font-medium px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition'
+                >
                   Delete Report
                 </button>
               </div>
