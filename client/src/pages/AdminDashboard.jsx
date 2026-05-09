@@ -7,7 +7,12 @@ import BackButton from '../buttons/BackButton';
 import { Link } from 'react-router-dom';
 
 function getInitials(name) {
-  return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  return name
+  .split(' ')
+  .map(n => n[0])
+  .join('')
+  .slice(0, 2)
+  .toUpperCase();
 }
 
 const avatarColors = [
@@ -15,7 +20,7 @@ const avatarColors = [
   'bg-blue-100 text-blue-700',
   'bg-amber-100 text-amber-700',
   'bg-purple-100 text-purple-700',
-  'bg-teal-100 text-teal-700',
+  'bg-orange-100 text-orange-700',
 ];
 
 function AdminDashboard() {
@@ -24,33 +29,93 @@ function AdminDashboard() {
 
   useEffect(() => {
     fetchReports();
-    fetchUsers();
   }, []);
 
-  // REPORTS
+  // FETCH REPORTS
   const fetchReports = async () => {
-    const { data } = await supabase
+    const { data, error } = await supabase
+      .from('Reports')
+      .select('*');
+    
+    if (error) {
+      console.log('Reports error:', error.message);
+      return;
+    }
+
+    setReports(data || []);
+    buildUsersFromReports(data || []);
+  };
+
+  // BUILD USERS USING user_id
+  const buildUsersFromReports = (reportsData) => {
+    const grouped = {};
+
+    reportsData.forEach((report) => {
+      const key = report.email; 
+
+      if (!key) return;
+
+      if (!grouped[key]) {
+        grouped[key] = {
+          user_id: report.user_id ?? report.id,
+          name: report.full_name || 'Unknown',
+          email: report.email,
+          reportsCount: 0,
+          role: report.role || 'user',
+        };
+      }
+
+      grouped[key].reportsCount += 1; // ✓ fixed typo from reportCount
+    });
+
+    setUsers(Object.values(grouped));
+  };
+
+  // FETCH USERS
+  const fetchUsers = async () => {
+    const { data: userData, error: userError } = await supabase
+      .from('Users')
+      .select('*');
+
+    if (userError) {
+      console.log('Users error:', userError.message);
+      return;
+    }
+
+    const { data: reportsData, error: reportsError } = await supabase
       .from('Reports')
       .select('*');
 
-    setReports(data || []);
+    if (reportsError) {
+      console.log('Reports error:', reportsError.message);
+      return;
+    }
+
+    const enrichedUsers = (userData || []).map(user => {
+      const userReports = (reportsData || []).filter(
+        r => r.user_id === user.id
+      );
+
+      return {
+        ...user,
+        reportsCount: userReports.length
+      };
+    });
+
+    setUsers(enrichedUsers);
+
+
+  console.log('userData:', userData);
+  console.log('reportsData:', reportsData);
+
+
   };
 
-  // USERS
-  const fetchUsers = async () => {
-    const { data } = await supabase
-      .from('users')
-      .select('*');
-
-    setUsers(data || []);
-  };
-
-
-  
   return (
     <div className='max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8'>
       <BackButton />
 
+    {/* HEADER */}
       <div className='flex items-center justify-between'>
         <div>
           <h1 className='text-xl font-medium text-stone-800'>Admin Overview</h1>
@@ -73,7 +138,7 @@ function AdminDashboard() {
         <div className='bg-white border border-stone-200 rounded-xl overflow-hidden'>
           <div className='flex items-center justify-between px-4 py-3 border-b border-stone-100'>
             <h2 className='text-sm font-medium text-stone-800'>Recent reports</h2>
-            <Link to='/reports' className='text-sm text-green-600 hover:text-green-700 transition'>
+            <Link to='/reports' className='text-sm text-green-700 hover:text-green-800 transition'>
               View all
             </Link>
           </div>
@@ -83,9 +148,10 @@ function AdminDashboard() {
               <div key={report.id} className='flex items-center justify-between gap-4 px-4 py-3'>
 
               <div className='flex flex-col gap-0.5 min-w-0'>
-                <p className='text-xs text-stone-400'>{report.id}</p>
+                <p className='text-xs text-stone-400'>RPT-{report.id}</p>
                 <p className='text-sm font-medium text-stone-800 truncate'>{report.title}</p>
-                <p className='text-xs text-stone-400 truncate'>{report.category} · {report.location}  
+                <p className='text-xs text-stone-400 truncate'>
+                  {report.category} · {report.location}  
                 </p>
              </div>
 
@@ -107,18 +173,23 @@ function AdminDashboard() {
             <h2 className='text-sm font-medium text-stone-800'>Users</h2>
             <Link to='/users' className='text-xs text-green-600 hover:text-green-700 transition'>View all</Link>
           </div>
+
+          {/* USER INFO */}
           <div className='divide-y divide-stone-100'>
             {users.slice(0, 5).map((user, i) => (
-              <div key={user.id} className='flex items-center justify-between gap-4 px-4 py-3'>
+              <div key={user.email} className='flex items-center justify-between gap-4 px-4 py-3'>
+
                 <div className='flex items-center gap-3 min-w-0'>
                   <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 ${avatarColors[i % avatarColors.length]}`}>
                     {getInitials(user.name)}
                   </div>
                   <div className='min-w-0'>
                     <p className='text-sm font-medium text-stone-800 truncate'>{user.name}</p>
-                    <p className='text-xs text-stone-400'>{user.reports} reports</p>
+                    <p className='text-xs text-stone-400'>{user.reportsCount} reports</p>
                   </div>
                 </div>
+
+                {/* ROLE */}
                 <span className={`text-xs rounded-full px-3 py-1 flex-shrink-0
                   ${user.role === 'admin' ? 'bg-purple-50 text-purple-700' : 'bg-stone-100 text-stone-500'}
                 `}>

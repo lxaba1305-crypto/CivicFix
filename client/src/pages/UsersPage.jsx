@@ -23,7 +23,7 @@ const avatarColors = [
 ];
 
 function UsersPage() {
-  const [users, setUsers] = useState();
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // FETCH USERS
@@ -33,7 +33,7 @@ function UsersPage() {
 
   const fetchUsers = async () => {
     const { data, error } = await supabase
-      .from('Users')
+      .from('Reports')
       .select('*');
 
     if (error) {
@@ -42,14 +42,39 @@ function UsersPage() {
       return;
     }
 
-    setUsers(data || []);
+    // GROUP USERS FORM REPORTS
+    const groupedUsers = [];
+
+    data.forEach((report) => {
+      const existingUser = groupedUsers.find(
+        user => user.email === report.email
+      );
+
+      if (existingUser) {
+        existingUser.reports += 1;
+      } else {
+        groupedUsers.push({
+          id: report.id,
+          name: report.full_name,
+          email: report.email,
+          reports: 1,
+          status: 'active',
+          role: 'user',
+          joined: new Date(report.created_at)
+            .toISOString()
+            .split('T')[0],
+        });
+      }
+    });
+
+    setUsers(groupedUsers);
     setLoading(false);
   }
 
   // DELETE USERS
   const handleDeleteUser = async (id) => {
     const { error } = await supabase
-      .from('Users')
+      .from('Reports')
       .delete()
       .eq('id', id);
 
@@ -64,7 +89,7 @@ function UsersPage() {
   // UPDATE ROLE
   const handleRoleChange = async (id, newRole) => {
     const { error } = await supabase
-      .from('users')
+      .from('Reports')
       .update({ role: newRole })
       .eq('id', id);
 
