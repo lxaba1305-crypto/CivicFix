@@ -1,4 +1,4 @@
-app.post("/report", async (req, res) => {
+router.post("/report", async (req, res) => {
     const { title, description, location, user_id } = req.body;
 
     const { data, error } = await supabase
@@ -10,7 +10,7 @@ app.post("/report", async (req, res) => {
     res.json(data);
 });
 
-app.get("/reports", async (req, res) => {
+router.get("/reports", async (req, res) => {
     const { data, error } = await supabase
         .from("reports")
         .select("*");
@@ -20,7 +20,7 @@ app.get("/reports", async (req, res) => {
     res.json(data);
 });
 
-app.put("/reports/:id", async (req, res) => {
+router.put("/reports/:id", async (req, res) => {
     const { status } = req.body;
 
     const { data, error } = await supabase
@@ -33,7 +33,7 @@ app.put("/reports/:id", async (req, res) => {
     res.json(data);
 });
 
-app.delete("/reports/:id", async (req, res) => {
+router.delete("/reports/:id", async (req, res) => {
     const { data, error } = await supabase
         .from("reports")
         .delete()
