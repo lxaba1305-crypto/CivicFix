@@ -1,21 +1,23 @@
 
-const StatsCard = () => {
+const StatsCard = ({ reports }) => {
+  const safeReports = reports || [];
+
   const stats = [
     {
       label: "Total Reports",
-      value: reports.length,
+      value: safeReports.length,
     },
     {
       label: "Pending Reports",
-      value: reports.filter(r => r.status === "pending").length,
+      value: safeReports.filter(r => r.status === "pending").length,
     },
     {
       label: "In Progress Reports",
-      value: reports.filter(r => r.status === "in progress").length,
+      value: safeReports.filter(r => r.status === "in progress").length,
     },
     {
       label: "Resolved Reports",
-      value: reports.filter(r => r.status === "resolved").length,
+      value: safeReports.filter(r => r.status === "resolved").length,
     },
   ]
 

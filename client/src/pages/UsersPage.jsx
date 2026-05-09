@@ -1,32 +1,94 @@
-import { useState } from 'react';
-import { users as initialUsers } from '../data/reports';
+import { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
 import { Link } from 'react-router-dom';
 import BackButton from '../buttons/BackButton';
 
-function getInitials(name) {
-  return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+function getInitials(name = '') {
+  return name
+  .split(' ')
+  .map(n => n[0])
+  .join('')
+  .slice(0, 2)
+  .toUpperCase();
 }
 
-const avatarColors = {
-  'USR-001': 'bg-green-100 text-green-700',
-  'USR-002': 'bg-blue-100 text-blue-700',
-  'USR-003': 'bg-amber-100 text-amber-700',
-  'USR-004': 'bg-purple-100 text-purple-700',
-  'USR-005': 'bg-teal-100 text-teal-700',
-  'USR-006': 'bg-rose-100 text-rose-700',
-  'USR-007': 'bg-stone-100 text-stone-600',
-};
+const avatarColors = [
+  'bg-green-100 text-green-700',
+  'bg-blue-100 text-blue-700',
+  'bg-amber-100 text-amber-700',
+  'bg-purple-100 text-purple-700',
+  'bg-teal-100 text-teal-700',
+  'bg-rose-100 text-rose-700',
+  'bg-stone-100 text-stone-600',
+];
 
 function UsersPage() {
-  const [users, setUsers] = useState(initialUsers);
+  const [users, setUsers] = useState();
+  const [loading, setLoading] = useState(true);
 
-  const handleDeleteUser = (id) => {
-    setUsers(prev => prev.filter(u => u.id !== id));
+  // FETCH USERS
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    const { data, error } = await supabase
+      .from('Users')
+      .select('*');
+
+    if (error) {
+      console.log(error);
+      setLoading(false);
+      return;
+    }
+
+    setUsers(data || []);
+    setLoading(false);
+  }
+
+  // DELETE USERS
+  const handleDeleteUser = async (id) => {
+    const { error } = await supabase
+      .from('Users')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    setUsers(prev => prev.filter(user => user.id !== id));
   };
 
-  const handleRoleChange = (id, newRole) => {
-    setUsers(prev => prev.map(u => u.id === id ? { ...u, role: newRole } : u));
+  // UPDATE ROLE
+  const handleRoleChange = async (id, newRole) => {
+    const { error } = await supabase
+      .from('users')
+      .update({ role: newRole })
+      .eq('id', id);
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    setUsers(prev =>
+      prev.map(user =>
+        user.id === id
+          ? { ...user, role: newRole }
+          : user
+      )
+    );
   };
+
+  if (loading) {
+    return (
+      <div className='p-6 text-sm text-stone-500'>
+        Loading users...
+      </div>
+    );
+  }
 
   return (
     <div className='max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8'>
@@ -56,7 +118,7 @@ function UsersPage() {
 
         {/* ROWS */}
         <div className='divide-y divide-stone-100'>
-          {users.map((user) => (
+          {users.map((user, i) => (
             <div key={user.id} className='grid grid-cols-12 gap-4 px-4 py-3 items-center hover:bg-stone-50 transition'>
               
               {/* USER */}
@@ -90,7 +152,7 @@ function UsersPage() {
                   to='/reports'
                   className='text-sm text-stone-700 hover:text-green-600 transition font-medium'
                 >
-                  {user.reports}
+                  {user.reports || 0}
                   <span className='text-xs text-stone-400 font-normal ml-1'>reports</span>
                 </Link>
               </div>
@@ -116,12 +178,6 @@ function UsersPage() {
 
             </div>
           ))}
-        </div>
-
-        {/* FOOTER */}
-        <div className='px-4 py-3 border-t border-stone-100 flex items-center justify-between'>
-          <p className='text-xs text-stone-400'>Showing {users.length} users</p>
-          <p className='text-xs text-stone-400'>Joined · {users[0]?.joined ?? '—'} – {users[users.length - 1]?.joined ?? '—'}</p>
         </div>
       </div>
 

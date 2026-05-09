@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
 import ReportCard from '../components/ReportCard';
 import ReportChart from '../components/ReportChart';
 import StatsCard from '../components/StatsCard';
@@ -17,6 +19,34 @@ const avatarColors = [
 ];
 
 function AdminDashboard() {
+  const [reports, setReports] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetchReports();
+    fetchUsers();
+  }, []);
+
+  // REPORTS
+  const fetchReports = async () => {
+    const { data } = await supabase
+      .from('Reports')
+      .select('*');
+
+    setReports(data || []);
+  };
+
+  // USERS
+  const fetchUsers = async () => {
+    const { data } = await supabase
+      .from('users')
+      .select('*');
+
+    setUsers(data || []);
+  };
+
+
+  
   return (
     <div className='max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8'>
       <BackButton />
@@ -32,7 +62,7 @@ function AdminDashboard() {
       <hr className='border-0 border-t border-stone-200 '/>
 
       {/* STATS */}
-      <StatsCard />
+      <StatsCard reports={reports} />
 
       {/* CHARTS */}
       <ReportChart />
@@ -47,6 +77,7 @@ function AdminDashboard() {
               View all
             </Link>
           </div>
+
           <div className='divide-y divide-stone-100'>
             {reports.slice(0, 5).map((report) => (
               <div key={report.id} className='flex items-center justify-between gap-4 px-4 py-3'>

@@ -1,13 +1,21 @@
 import { Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, Cell, Legend } from 'recharts';
 
-function ReportChart() {
+function ReportChart({ reports = [] }) {
   // REPORTS PER DAY (LINE CHART)
   const reportsPerDay = Object.values(
     reports.reduce((acc, report) => {
-      if (!acc[report.date]) {
-        acc[report.date] = { date: report.date, count: 0 };
+
+      const date = new Date(report.created_at)
+        .toISOString()
+        .split('T')[0];
+
+      if (!acc[date]) {
+        acc[date] = { 
+          date, 
+          count: 0,
+        };
       }
-      acc[report.date].count++;
+      acc[date].count++;
       return acc;
     }, {})
   );
