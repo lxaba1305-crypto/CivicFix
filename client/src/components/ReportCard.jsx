@@ -50,7 +50,7 @@ function ReportCard({ report, role, onUpdate, onDelete }) {
         {/* REPORTS */}
         <div>
           <div className='flex items-center justify-between'>
-            <p className='text-xs text-stone-500'>RPN - 0{report.id}</p>
+            <p className='text-xs text-stone-500'>RPN-0{report.id}</p>
 
             <span className={`text-xs rounded-full font-meduim p-2 shrink-0
               ${report.status === 'pending' ? 'bg-yellow-50 text-yellow-700' : ''}
@@ -83,46 +83,34 @@ function ReportCard({ report, role, onUpdate, onDelete }) {
             <div>
               <hr className='border-stone-300'/>
 
-              <div className='flex gap-4 mt-3 flex-wrap'>
-                {/* IN PROGESS */}
-                <button
-                  onClick={() =>
-                    updateStatus('in progress')
-                  } 
-                  className='flex-1 text-xs font-medium bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 rounded-lg px-4 py-2 transition'>
-                  Mark as In Progress
-                </button>
+              {/* STATUS DROPDOWN */}
+              <select 
+                value={status} 
+                onChange={updateStatus}
+                disabled={loading}
+                className='text-xs border-stone-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-green-400'
+              >
+                {STATUS_OPTIONS.map((s) => (
+                  <option key={s} value={s}>
+                    {s.charAt(0).toUpperCase() + s.slice(1)}
+                  </option>
+                ))}
+              </select>
 
-                {/* RESOLVED */}
-                <button
-                  onClick={() => updateStatus('resolved')} 
-                  className='text-xs font-medium px-4 py-2 bg-green-50 text-green-600 hover:bg-green-100 rounded-lg transition'>
-                  Resolved Report
-                </button>
-
-                {/* Pending */}
-                <button
-                  onClick={() => updateStatus('pending')} 
-                  className='text-xs font-medium px-4 py-2 bg-yellow-50 text-yellow-600 hover:bg-yellow-100 rounded-lg transition'>
-                  Pending Report
-                </button>
-
-                {/* DELETE */}
-                <button
-                  onClick={deleteReport}
-                  className='w-full text-xs font-medium px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition'
-                >
-                  Delete Report
-                </button>
-              </div>
+              {/* DELETE */}
+              <button
+                onClick={deleteReport}
+                className='w-full text-xs font-medium px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition'
+              >
+                Delete Report
+              </button>
             </div>
-          )}
-          
+        )}
         </div>
       </div>
     
     </div>
-  )
+  );
 }
 
 export default ReportCard
