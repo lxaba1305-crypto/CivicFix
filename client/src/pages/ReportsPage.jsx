@@ -77,7 +77,7 @@ function ReportsPage({ role }) {
   const filtered = reports.filter(r => {
     const matchStatus =
       statusFilter === 'All' ||
-      r.status?.toLowerCase() === statusFilter;
+      r.status?.toLowerCase() === statusFilter.toLowerCase();
 
     const matchCategory =
       categoryFilter === 'All' || 
@@ -161,8 +161,8 @@ function ReportsPage({ role }) {
             key={report.id} 
             report={report} 
             role={role} 
-            updateStatus={updateStatus}
-            deleteReport={deleteReport}
+            onUpdate={(id, newStatus) => updateStatus(id, newStatus)}
+            onDelete={(id) => deleteReport(id)}
           />
         ))}
       </div>
