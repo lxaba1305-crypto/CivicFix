@@ -87,7 +87,7 @@ function ReportCard({ report, role, onUpdate, onDelete }) {
                 {/* IN PROGESS */}
                 <button
                   onClick={() =>
-                    handleUpdateStatus('in progress')
+                    updateStatus('in progress')
                   } 
                   className='flex-1 text-xs font-medium bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 rounded-lg px-4 py-2 transition'>
                   Mark as In Progress
@@ -95,21 +95,21 @@ function ReportCard({ report, role, onUpdate, onDelete }) {
 
                 {/* RESOLVED */}
                 <button
-                  onClick={() => handleUpdateStatus('resolved')} 
+                  onClick={() => updateStatus('resolved')} 
                   className='text-xs font-medium px-4 py-2 bg-green-50 text-green-600 hover:bg-green-100 rounded-lg transition'>
                   Resolved Report
                 </button>
 
                 {/* Pending */}
                 <button
-                  onClick={() => handleUpdateStatus('pending')} 
+                  onClick={() => updateStatus('pending')} 
                   className='text-xs font-medium px-4 py-2 bg-yellow-50 text-yellow-600 hover:bg-yellow-100 rounded-lg transition'>
                   Pending Report
                 </button>
 
                 {/* DELETE */}
                 <button
-                  onClick={handleDeleteReport}
+                  onClick={deleteReport}
                   className='w-full text-xs font-medium px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition'
                 >
                   Delete Report
