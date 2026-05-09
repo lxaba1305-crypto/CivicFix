@@ -1,7 +1,7 @@
-
 import { MdNotificationsNone } from "react-icons/md";
 
-function Navbar({ title = "RoadAlert", user, onNew, notificationCount = 0 }) {
+function Navbar({ title, user, onNew, notificationCount = 0 }) {
+  
   return (
     <nav className="w-full bg-white border-b border-stone-200 px-6 h-14 flex items-center">
       <div className="w-full flex items-center justify-between gap-4">
@@ -21,13 +21,6 @@ function Navbar({ title = "RoadAlert", user, onNew, notificationCount = 0 }) {
 
         {/* RIGHT — actions */}
           <div className="flex items-center gap-3 shrink-0">
-
-          <button
-            onClick={onNew}
-            className="flex items-center gap-1 text-sm font-medium bg-green-500 text-white px-3 py-1.5 rounded-lg hover:bg-green-600 transition"
-          >
-            + New report
-          </button>
 
           {/* Notifications */}
           <div className="relative">

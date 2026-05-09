@@ -1,11 +1,16 @@
+import { useState } from 'react';
 import { GoTag } from 'react-icons/go';
 import { CiLocationOn, CiCalendarDate } from 'react-icons/ci';
 import { BsPerson } from 'react-icons/bs';
 import { supabase } from '../supabaseClient';
 
-function ReportCard({ report, role }) {
+function ReportCard({ report, role, onUpdate, onDelete }) {
+  const [loading, setLoading] = useState(false);
+
   // UPDATE STATUS
-  const handleUpdateStatus = async (newStatus) => {
+  const updateStatus = async (newStatus) => {
+    setLoading(true);
+
     const { error } = await supabase
       .from("Reports")
       .update({ status: newStatus })
@@ -13,15 +18,17 @@ function ReportCard({ report, role }) {
 
     if (error) {
       console.log("Status update error:", error.message);
-      return;
+    } else {
+      onUpdate?.();
     }
 
-    // Refresh page so updated status appears immediately
-    window.location.reload();
+    setLoading(false);
   };
 
   // DELETE REPORT
-  const handleDeleteReport = async () => {
+  const deleteReport = async () => {
+    setLoading(true);
+
     const { error } = await supabase
       .from("Reports")
       .delete()
@@ -29,10 +36,11 @@ function ReportCard({ report, role }) {
 
     if (error) {
       console.log("Delete error:", error.message);
-      return;
+    } else {
+      onDelete?.();
     }
 
-    window.location.reload();
+    setLoading(false);
   };
 
   return (
