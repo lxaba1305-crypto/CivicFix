@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../supabaseClient.js';
 import ReportCard from '../components/ReportCard';
 import BackButton from '../buttons/BackButton';
 
@@ -161,8 +161,8 @@ function ReportsPage({ role }) {
             key={report.id} 
             report={report} 
             role={role} 
-            onUpdate={(id, newStatus) => updateStatus(id, newStatus)}
-            onDelete={(id) => deleteReport(id)}
+            onUpdate={() => fetchReports()}
+            onDelete={() => fetchReports()}
           />
         ))}
       </div>
