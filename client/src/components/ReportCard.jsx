@@ -4,6 +4,12 @@ import { CiLocationOn, CiCalendarDate } from 'react-icons/ci';
 import { BsPerson } from 'react-icons/bs';
 import { supabase } from '../supabaseClient';
 
+const STATUS_OPTIONS = [
+  'pending',
+  'in progress',
+  'resolved',
+];
+
 function ReportCard({ report, role, onUpdate, onDelete }) {
   const [loading, setLoading] = useState(false);
 
@@ -85,8 +91,8 @@ function ReportCard({ report, role, onUpdate, onDelete }) {
 
               {/* STATUS DROPDOWN */}
               <select 
-                value={status} 
-                onChange={updateStatus}
+                value={report.status} 
+                onChange={(e) => updateStatus(e.target.value)}
                 disabled={loading}
                 className='text-xs border-stone-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-green-400'
               >
@@ -100,6 +106,7 @@ function ReportCard({ report, role, onUpdate, onDelete }) {
               {/* DELETE */}
               <button
                 onClick={deleteReport}
+                disabled={loading}
                 className='w-full text-xs font-medium px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition'
               >
                 Delete Report

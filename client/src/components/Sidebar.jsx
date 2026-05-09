@@ -25,6 +25,7 @@ const NavItems = ({ items, onNavigate }) => (
           {item.icon}
           {item.label}
         </span>
+
         {item.badge > 0 && (
           <span className='text-xs bg-yellow-100 text-yellow-700 rounded-full px-2 py-1 '>
             {item.badge}
@@ -43,19 +44,21 @@ function Sidebar({ role, setRole }) {
     fetchReports();
   }, []);
 
+  // FETCH REPORTS
   const fetchReports = async () => {
     const { data, error } = await supabase
       .from('Reports')
-      .select('*');
+      .select('*')
 
     if (error) {
-      console.log(error);
+      console.log('Reports error:', error.message);
       return;
     }
 
     setReports(data || []);
   };
-
+      
+  // ACCURATE PENDING COUNT
   const pendingCount = reports.filter(
     r => r.status === 'pending'
   ).length;
