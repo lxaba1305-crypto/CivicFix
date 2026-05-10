@@ -7,7 +7,7 @@ router.post("/report", async (req, res) => {
     const { title, description, location, user_id } = req.body;
 
     const { data, error } = await supabase
-        .from("reports")
+        .from("Reports")
         .insert([{ title, description, location, user_id }]);
 
     if (error) return res.status(400).json({ error });
@@ -17,7 +17,7 @@ router.post("/report", async (req, res) => {
 
 router.get("/reports", async (req, res) => {
     const { data, error } = await supabase
-        .from("reports")
+        .from("Reports")
         .select("*");
 
     if (error) return res.status(400).json({ error });
@@ -29,7 +29,7 @@ router.put("/reports/:id", async (req, res) => {
     const { status } = req.body;
 
     const { data, error } = await supabase
-        .from("reports")
+        .from("Reports")
         .update({ status })
         .eq("id", req.params.id);
 
@@ -40,7 +40,7 @@ router.put("/reports/:id", async (req, res) => {
 
 router.delete("/reports/:id", async (req, res) => {
     const { data, error } = await supabase
-        .from("reports")
+        .from("Reports")
         .delete()
         .eq("id", req.params.id);
 

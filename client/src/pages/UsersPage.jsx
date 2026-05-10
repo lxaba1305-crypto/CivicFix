@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../supabaseClient.js';
 import { Link } from 'react-router-dom';
 import BackButton from '../buttons/BackButton';
 
@@ -148,7 +148,7 @@ function UsersPage() {
               
               {/* USER */}
               <div className='col-span-4 flex items-center gap-3 min-w-0'>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 ${avatarColors[user.id]}`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium shrink-0 ${avatarColors[user.id]}`}>
                   {getInitials(user.name)}
                 </div>
                 <div className='min-w-0'>

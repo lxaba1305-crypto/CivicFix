@@ -5,11 +5,33 @@ import BackButton from "../buttons/BackButton";
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         // Handle login logic here
-    }
+        const res = await fetch('http://localhost:5000/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+            setError(data.error || "Login failed");
+            return;
+        }
+
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        if (data.user.role === 'admin') {
+            window.location.href = '/admin';
+        } else {
+            window.location.href = '/dashboard';
+        }
+    };
 
     return (
         <div className="min-h-screen bg-stone-50 flex items-center justify-center px-4">
@@ -47,6 +69,8 @@ function Login() {
                             required
                         />
                     </div>
+
+                    {error && (<p className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">{error}</p>)}
                     <button type="submit" className="w-full py-2 text-sm font-medium bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
                         Sign In
                     </button>

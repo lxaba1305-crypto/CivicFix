@@ -9,13 +9,29 @@ function Signup() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit =  async (e) => {
         e.preventDefault();
         if (password !== confirmPassword) {
             setError("Passwords do not match!");
             return;
         }
         setError('');
+
+        const res = await fetch('http://localhost:5000/auth/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, email, password })
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+            setError(typeof data.error === 'string' ? data.error : data.error?.message || "Signup failed");
+            return;
+        }
+
+        window.location.href = '/login';
 }
 
     return (
