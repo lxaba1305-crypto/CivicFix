@@ -27,13 +27,6 @@ return (
             Sign In
           </Link>
 
-          {/* PRIMARY DEMO BUTTON */}
-          <Link
-            to='/dashboard'
-            className='px-6 py-3 text-sm font-medium bg-green-500 text-white rounded-lg hover:bg-green-600 transition text-center' 
-          >
-            Demo
-          </Link>
       </div>
 
         </div>

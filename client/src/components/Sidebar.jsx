@@ -99,14 +99,6 @@ function Sidebar({ role, setRole }) {
         <NavItems items={navItems} onNavigate={() => setOpen(false)} />
       </nav>
 
-      {/* temporary button to view user and admin dashboard */}
-      <button
-        onClick={() => setRole(role === "admin" ? "user" : "admin")}
-        className="text-xs text-green-600 hover:underline"
-      >
-        Switch to {role === "admin" ? "User" : "Admin"}
-      </button>
-
       {/* BOTTOM */}
       <div className='px-4 py-4 border-t border-stone-100 flex items-center gap-3'>
         <div className='w-7 h-7 rounded-full bg-green-100 text-green-700 text-xs font-medium flex items-center justify-center'>
