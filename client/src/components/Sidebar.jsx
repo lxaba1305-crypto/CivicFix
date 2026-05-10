@@ -39,6 +39,7 @@ const NavItems = ({ items, onNavigate }) => (
 function Sidebar({ role, setRole }) {
   const [open, setOpen] = useState(false);
   const [reports, setReports] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchReports();
@@ -57,6 +58,12 @@ function Sidebar({ role, setRole }) {
 
     setReports(data || []);
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setRole(null);
+    navigate('/login');
+  }
       
   // ACCURATE PENDING COUNT
   const pendingCount = reports.filter(
@@ -112,7 +119,7 @@ function Sidebar({ role, setRole }) {
             {role === "admin" ? "admin@civicfix.com" : "user@civicfix.com"} 
           </span>
         </div>
-        <button className='p-2 rounded-md text-red-500 hover:bg-red-100 transition'>
+        <button onClick={handleLogout} className='p-2 rounded-md text-red-500 hover:bg-red-100 transition'>
           <MdLogout className='h-5 w-5' />
         </button>
 
