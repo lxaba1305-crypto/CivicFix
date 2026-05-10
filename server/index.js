@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import { createClient } from "@supabase/supabase-js";
 import authRoutes from "./Routes/authRoutes.js";
 import reports from "./Routes/report.js";
+import ws from "ws";
 
 dotenv.config();
 
@@ -17,7 +18,9 @@ app.get("/", (req, res) => {
   res.send("CivicFix API is running");
 });
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY,
+  { realtime: { transport: ws } }
+);
 
 app.use("/auth", authRoutes);
 app.use("/reports", reports);

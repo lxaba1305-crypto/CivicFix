@@ -1,3 +1,8 @@
+import express from "express";
+import supabase from "../config/supabaseClient.js";
+
+const router = express.Router();
+
 router.post("/report", async (req, res) => {
     const { title, description, location, user_id } = req.body;
 
@@ -43,3 +48,5 @@ router.delete("/reports/:id", async (req, res) => {
 
     res.json(data);
 });
+
+export default router;
