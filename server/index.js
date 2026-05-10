@@ -18,10 +18,6 @@ app.get("/", (req, res) => {
   res.send("CivicFix API is running");
 });
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY,
-  { realtime: { transport: ws } }
-);
-
 app.use("/auth", authRoutes);
 app.use("/reports", reports);
 
