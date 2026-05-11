@@ -25,27 +25,20 @@ function App() {
   
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem('user');
-
-    const [role, setRole] = useState(
-      storedUser?.role || 'user'
-    )
-    //return storedUser ? JSON.parse(storedUser) : null;
-    //return storedUser ? JSON.parse(storedUser).role : 'user';
+    return storedUser ? JSON.parse(storedUser) : null;
   });
   
   useEffect(() => {
-    if (loading) {
+    if (!loading)  return;
+
       const timer = setTimeout(() => {
             setLoading(false);
             localStorage.setItem("hasVisitedCivicFix", "true")
         }, 3000);
-    }
-      return () => { 
-        if (timer) {
-          clearTimeout(timer);
-        }
-    };
-   }, [loading]);
+    
+      return () => clearTimeout(timer);
+        
+    }, []);
 
   const handleRoleChange = (newRole) => {
     setRole(newRole);

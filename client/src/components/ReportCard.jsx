@@ -78,9 +78,9 @@ function ReportCard({ report, role, onUpdate, onDelete }) {
               <p className='flex items-center gap-2 truncate'><BsPerson />{report.full_name}</p>
               <p className='flex items-center gap-2 text-right'>
                 <CiCalendarDate />
-                {new Date(report.created_at)
-                  .toISOString()
-                  .split('T')[0]}
+                {report.created_at
+                  ? new Date(report.created_at).toISOString()
+                  :"No date"}
               </p>
           </div>
 

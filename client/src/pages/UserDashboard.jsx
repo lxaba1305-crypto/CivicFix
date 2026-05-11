@@ -31,7 +31,8 @@ const UserDashboard = () => {
   };
 
   const handleSubmit = (newReport) => {
-    setReports((prev) => [newReport, ...prev]);
+    const report = newReport.data ?? newReport;
+    setReports((prev) => [report, ...prev]);
   };
 
   if (loading) {
@@ -41,6 +42,11 @@ const UserDashboard = () => {
       </div>
     );
   }
+
+  {reports.map((report) => {
+  console.log(report); // check what fields actually come back
+  return <ReportCard key={report.id} report={report} role="user" />;
+})}
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8">
