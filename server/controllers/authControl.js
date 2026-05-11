@@ -91,16 +91,6 @@ export const login = async (req, res) => {
       });
     }
 
-    // ENSURE ADMIN ACCOUNTS USE @ADMIN EMAILS
-    if (
-      user.role === 'admin' &&
-      !user.email.endsWith('@admin')
-    ) {
-      return res.status(400).json({
-        error: 'Admin email must end with @admin',
-      });
-    }
-
     res.json({
       message: 'Login successful',
       user: {
@@ -110,6 +100,7 @@ export const login = async (req, res) => {
         role: user.role,
       },
     });
+
   } catch (err) {
     res.status(500).json({
       error: err.message,
