@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import BackButton from '../buttons/BackButton';
 
 function Signup() {
@@ -9,6 +9,8 @@ function Signup() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
 
+    const navigate = useNavigate();
+
     const handleSubmit =  async (e) => {
         e.preventDefault();
         if (password !== confirmPassword) {
@@ -17,22 +19,27 @@ function Signup() {
         }
         setError('');
 
-        const res = await fetch('http://localhost:5000/auth/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name, email, password })
-        });
+        try {
+            const res = await fetch('http://localhost:5000/auth/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, email, password })
+            });
 
-        const data = await res.json();
-        if (!res.ok) {
-            setError(typeof data.error === 'string' ? data.error : data.error?.message || "Signup failed");
-            return;
+            const data = await res.json();
+            if (!res.ok) {
+                setError(typeof data.error === 'string' ? data.error : data.error?.message || "Signup failed");
+                return;
+            }
+
+            navigate('/login');
+        } catch (err) {
+            console.error('Signup error:', err);
+            setError('Server error. Please try again.');
         }
-
-        window.location.href = '/login';
-}
+    };
 
     return (
         <div className="min-h-screen bg-stone-50 flex items-center justify-center px-4">
@@ -49,6 +56,12 @@ function Signup() {
                 <h1 className="text-base font-medium text-stone-800 ">Create Account</h1>
                 <p className="text-sm text-stone-500 mb-6">Join our community today!</p>
         
+                {error && (
+                  <p className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2 mb-4">
+                    {error}
+                  </p>
+                )}
+
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                   <div className="flex flex-col gap-1">
                     <label className="text-xs font-medium text-stone-500">Name</label>
@@ -109,12 +122,6 @@ function Signup() {
                     Log in
                   </Link>
                 </p>
-                
-                {error && (
-                  <p className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
-                    {error}
-                  </p>
-                )}
             </div>
           </div>
         </div>

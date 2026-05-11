@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient.js';
 import { Link } from 'react-router-dom';
 import BackButton from '../buttons/BackButton';
 
@@ -26,86 +25,72 @@ function UsersPage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // FETCH USERS
+  // FETCH USERS FROM REPORTS
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/reports');
+      const data = await response.json();
+      
+      if (!data || !Array.isArray(data)) {
+        console.error('Invalid data:', data);
+        setLoading(false);
+        return;
+      }
+
+      // GROUP USERS FROM REPORTS
+      const groupedUsers = [];
+
+      data.forEach((report) => {
+        const existingUser = groupedUsers.find(
+          user => user.email === report.email
+        );
+
+        if (existingUser) {
+          existingUser.reports += 1;
+        } else {
+          groupedUsers.push({
+            id: report.id,
+            name: report.full_name,
+            email: report.email,
+            reports: 1,
+            status: 'active',
+            role: 'user',
+            joined: new Date(report.created_at)
+              .toISOString()
+              .split('T')[0],
+          });
+        }
+      });
+
+      setUsers(groupedUsers);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  const fetchUsers = async () => {
-    const { data, error } = await supabase
-      .from('Reports')
-      .select('*');
+  // DELETE USERS (from reports)
+  async function handleDeleteUser(id) {
+    try {
+      const response = await fetch(`http://localhost:5000/reports/${id}`, {
+        method: 'DELETE'
+      });
 
-    if (error) {
-      console.log(error);
-      setLoading(false);
-      return;
-    }
-
-    // GROUP USERS FORM REPORTS
-    const groupedUsers = [];
-
-    data.forEach((report) => {
-      const existingUser = groupedUsers.find(
-        user => user.email === report.email
-      );
-
-      if (existingUser) {
-        existingUser.reports += 1;
-      } else {
-        groupedUsers.push({
-          id: report.id,
-          name: report.full_name,
-          email: report.email,
-          reports: 1,
-          status: 'active',
-          role: 'user',
-          joined: new Date(report.created_at)
-            .toISOString()
-            .split('T')[0],
-        });
+      if (!response.ok) {
+        console.error('Failed to delete report');
+        return;
       }
-    });
 
-    setUsers(groupedUsers);
-    setLoading(false);
+      setUsers(prev => prev.filter(user => user.id !== id));
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
   }
-
-  // DELETE USERS
-  const handleDeleteUser = async (id) => {
-    const { error } = await supabase
-      .from('Reports')
-      .delete()
-      .eq('id', id);
-
-    if (error) {
-      console.log(error);
-      return;
-    }
-
-    setUsers(prev => prev.filter(user => user.id !== id));
-  };
-
-  // UPDATE ROLE
-  const handleRoleChange = async (id, newRole) => {
-    const { error } = await supabase
-      .from('Reports')
-      .update({ role: newRole })
-      .eq('id', id);
-
-    if (error) {
-      console.log(error);
-      return;
-    }
-
-    setUsers(prev =>
-      prev.map(user =>
-        user.id === id
-          ? { ...user, role: newRole }
-          : user
-      )
-    );
-  };
 
   if (loading) {
     return (
@@ -148,7 +133,7 @@ function UsersPage() {
               
               {/* USER */}
               <div className='col-span-4 flex items-center gap-3 min-w-0'>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium shrink-0 ${avatarColors[user.id]}`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium shrink-0 ${avatarColors[i % avatarColors.length]}`}>
                   {getInitials(user.name)}
                 </div>
                 <div className='min-w-0'>
@@ -159,16 +144,11 @@ function UsersPage() {
 
               {/* ROLE */}
               <div className='col-span-2'>
-                <select
-                  value={user.role}
-                  onChange={e => handleRoleChange(user.id, e.target.value)}
-                  className={`text-xs rounded-full px-2.5 py-1 border-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-green-400
-                    ${user.role === 'admin' ? 'bg-purple-50 text-purple-700' : 'bg-stone-100 text-stone-600'}
-                  `}
-                >
-                  <option value='user'>user</option>
-                  <option value='admin'>admin</option>
-                </select>
+                <span className={`text-xs rounded-full px-2.5 py-1
+                  ${user.role === 'admin' ? 'bg-purple-50 text-purple-700' : 'bg-stone-100 text-stone-600'}
+                `}>
+                  {user.role}
+                </span>
               </div>
 
               {/* REPORTS */}
