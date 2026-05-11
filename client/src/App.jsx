@@ -12,9 +12,7 @@ import ReportsPage from './pages/ReportsPage';
 import UsersPage from './pages/UsersPage';
 
 function App() {
-  const [loading, setLoading] = useState(() => {
-    return !localStorage.getItem("hasVisitedCivicFix");
-  });
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
