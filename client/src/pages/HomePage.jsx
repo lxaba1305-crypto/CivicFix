@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom';
 import backgroundImage from '../images/background-img.jpg';
 
 function HomePage() {
-return (
-        <div style={{ backgroundImage: `url(${backgroundImage})` }} className="bg-cover bg-center w-full min-h-screen">
+  return (
+    <div style={{ backgroundImage: `url(${backgroundImage})` }} className="relative bg-cover bg-center w-full min-h-screen">
 
-        <div className="min-h-screen w-full bg-black/50 flex flex-col items-center justify-center px-4">
+      <div className="min-h-screen w-full bg-black/50 flex flex-col items-center justify-center px-4">
 
         <div className="flex items-center gap-2 mb-6">
           <div className="w-2 h-2 rounded-full bg-green-400"/>
