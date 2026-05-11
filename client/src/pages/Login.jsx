@@ -35,7 +35,7 @@ function Login() {
         // NEVER reassign data or user variables
         const role = data.user.role;
 
-        if (role === 'admin') {
+        if (data.user.role === 'admin') {
             navigate('/admin');
         } else {
             navigate('/dashboard');

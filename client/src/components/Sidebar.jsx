@@ -93,6 +93,8 @@ function Sidebar({ role, setRole }) {
   ),
 ]
 
+console.log('Sidebar role:', role);
+
   return (
     <>
     <div className="hidden md:flex h-screen w-60 bg-white border-r border-stone-200 shrink-0 flex-col">
