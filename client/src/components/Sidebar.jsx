@@ -4,7 +4,6 @@ import { MdOutlineDashboard, MdOutlineInsertDriveFile, MdClose, MdMenu } from "r
 import { LuUsers } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
 import logo from '../assets/logo.png';
-import { supabase } from '../supabaseClient';
 
 const NavItems = ({ items, onNavigate }) => (
     <>
@@ -45,18 +44,22 @@ function Sidebar({ role, setRole }) {
     fetchReports();
   }, []);
 
-  // FETCH REPORTS
+  // FETCH REPORTS FROM BACKEND
   const fetchReports = async () => {
-    const { data, error } = await supabase
-      .from('Reports')
-      .select('*')
-
-    if (error) {
-      console.log('Reports error:', error.message);
-      return;
+    try {
+      const response = await fetch('http://localhost:5000/reports');
+      const data = await response.json();
+      
+      if (data && Array.isArray(data)) {
+        setReports(data);
+      } else {
+        console.error('Invalid reports data:', data);
+        setReports([]);
+      }
+    } catch (error) {
+      console.error('Error fetching reports:', error);
+      setReports([]);
     }
-
-    setReports(data || []);
   };
 
   const handleLogout = () => {
@@ -64,7 +67,7 @@ function Sidebar({ role, setRole }) {
     setRole(null);
     navigate('/login');
   }
-      
+       
   // ACCURATE PENDING COUNT
   const pendingCount = reports.filter(
     r => r.status === 'pending'
@@ -149,13 +152,13 @@ function Sidebar({ role, setRole }) {
 
           {/* BOTTOM */}
           <div className='px-4 py-4 border-t border-stone-100 flex items-center gap-3'>
-            <div className='w-7 h-7 rounded-full bg-green-100 text-green-700 text-xs font-medium flex itmes-center justify-center'>AD</div>
+            <div className='w-7 h-7 rounded-full bg-green-100 text-green-700 text-xs font-medium flex items-center justify-center'>AD</div>
 
             <div className='flex flex-col flex-1'>
               <span className='text-xs font-medium text-stone-700'>Admin</span>
               <span className="text-xs text-stone-400">admin@civicfix.com</span>
             </div>
-            <button className="p-2 rounded-md text-red-500 hover:bg-red-100 transition">
+            <button onClick={handleLogout} className="p-2 rounded-md text-red-500 hover:bg-red-100 transition">
               <MdLogout className="h-5 w-5" />
             </button>
           </div>

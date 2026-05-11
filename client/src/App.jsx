@@ -23,6 +23,11 @@ function App() {
     return storedUser ? JSON.parse(storedUser).role : null;
   });
   
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+  
   useEffect(() => {
     if (loading) {
       const timer = setTimeout(() => {
@@ -43,6 +48,7 @@ function App() {
     const storedUser = JSON.parse(localStorage.getItem('user')) || {};
     storedUser.role = newRole;
     localStorage.setItem('user', JSON.stringify(storedUser));
+    setUser(storedUser);
 
     if (newRole === "admin") {
       navigate("/admin");
@@ -67,7 +73,7 @@ function App() {
         <div className='flex h-screen overflow-hidden'>
           <Sidebar role={role} setRole={handleRoleChange} />
           <div className='flex-1 flex flex-col overflow-hidden'>
-            <Navbar title='Admin' />
+            <Navbar title='Admin' user={user} />
             <main className='flex-1 bg-stone-50 overflow-y-auto'>
               <AdminDashboard />
             </main>
@@ -80,7 +86,7 @@ function App() {
         <div className='flex h-screen overflow-hidden'>
           <Sidebar role={role} setRole={handleRoleChange} />
           <div className='flex-1 flex flex-col overflow-hidden'>
-            <Navbar title='CivicFix' />
+            <Navbar title='CivicFix' user={user} />
             <main className='flex-1 bg-stone-50 overflow-y-auto'>
               <UserDashboard />
             </main>
@@ -94,7 +100,7 @@ function App() {
         <div className='flex h-screen overflow-hidden'>
           <Sidebar role={role} setRole={handleRoleChange} />
           <div className='flex-1 flex flex-col overflow-hidden'>
-            <Navbar title='Reports' />
+            <Navbar title='Reports' user={user} />
             <main className='flex-1 bg-stone-50 overflow-y-auto'>
               <ReportsPage role={role} />
             </main>
@@ -107,7 +113,7 @@ function App() {
         <div className='flex h-screen overflow-hidden'>
           <Sidebar role={role} setRole={handleRoleChange} />
           <div className='flex-1 flex flex-col overflow-hidden'>
-            <Navbar title='Users' />
+            <Navbar title='Users' user={user} />
             <main className='flex-1 bg-stone-50 overflow-y-auto'>
               <UsersPage />
             </main>

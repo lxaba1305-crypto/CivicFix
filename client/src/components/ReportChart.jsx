@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../supabaseClient';
 import { Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, Cell, Legend } from 'recharts';
 
 function ReportChart() {
@@ -9,18 +8,22 @@ function ReportChart() {
     fetchReports();
   }, []);
 
-  // FETCH FROM SUPABASE
+  // FETCH FROM BACKEND API
   const fetchReports = async () => {
-    const { data, error } = await supabase
-      .from('Reports')
-      .select('*');
-
-    if (error) {
-      console.log('Chart fetch error:', error.message);
-      return;
+    try {
+      const response = await fetch('http://localhost:5000/reports');
+      const data = await response.json();
+      
+      if (data && Array.isArray(data)) {
+        setReports(data);
+      } else {
+        console.error('Invalid reports data:', data);
+        setReports([]);
+      }
+    } catch (error) {
+      console.error('Error fetching reports:', error);
+      setReports([]);
     }
-
-    setReports(data || []);
   };
 
   // REPORTS PER DAY (LINE CHART)

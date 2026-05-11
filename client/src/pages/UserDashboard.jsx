@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
 import ReportForm from "../components/ReportForm";
 import ReportCard from "../components/ReportCard";
 import BackButton from "../buttons/BackButton";
@@ -13,19 +12,22 @@ const UserDashboard = () => {
   }, []);
 
   const fetchReports = async () => {
-    const { data, error } = await supabase
-      .from("Reports")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.log(error);
+    try {
+      const response = await fetch('http://localhost:5000/reports');
+      const data = await response.json();
+      
+      if (data && Array.isArray(data)) {
+        setReports(data);
+      } else {
+        console.error('Invalid reports data:', data);
+        setReports([]);
+      }
+    } catch (error) {
+      console.error('Error fetching reports:', error);
+      setReports([]);
+    } finally {
       setLoading(false);
-      return;
     }
-
-    setReports(data || []);
-    setLoading(false);
   };
 
   const handleSubmit = (newReport) => {

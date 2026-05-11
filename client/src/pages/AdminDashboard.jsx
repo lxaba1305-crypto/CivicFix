@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
 import ReportChart from '../components/ReportChart';
 import ReportForm from '../components/ReportForm';
 import StatsCard from '../components/StatsCard';
@@ -55,43 +54,53 @@ function AdminDashboard() {
   };
 
   // =========================
-  // FETCH REPORTS
+  // FETCH REPORTS FROM BACKEND
   // =========================
   useEffect(() => {
-    const fetchReports = async () => {
-      const { data, error } = await supabase
-        .from('Reports')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        console.log('Reports error:', error.message);
-        return;
-      }
-
-      const safeData = data || [];
-      setReports(safeData);
-      buildUsersFromReports(safeData);
-    };
-
     fetchReports();
   }, []);
+
+  const fetchReports = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/reports');
+      const data = await response.json();
+      
+      if (data && Array.isArray(data)) {
+        setReports(data);
+        buildUsersFromReports(data);
+      } else {
+        console.error('Invalid reports data:', data);
+        setReports([]);
+      }
+    } catch (error) {
+      console.error('Error fetching reports:', error);
+      setReports([]);
+    }
+  };
 
   // =========================
   // CREATE REPORT (ADMIN)
   // =========================
   const addReport = async (newReport) => {
-    const { error } = await supabase
-      .from('Reports')
-      .insert([newReport]);
+    try {
+      const response = await fetch('http://localhost:5000/reports', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newReport)
+      });
 
-    if (error) {
-      console.log('Insert error:', error.message);
-      return;
+      if (!response.ok) {
+        console.error('Failed to create report');
+        return;
+      }
+
+      fetchReports();
+      setShowForm(false);
+    } catch (error) {
+      console.error('Error creating report:', error);
     }
-
-    fetchReports();
-    setShowForm(false);
   };
 
   return (
@@ -128,7 +137,7 @@ function AdminDashboard() {
       <StatsCard reports={reports} />
 
       {/* CHARTS */}
-      <ReportChart reports={reports} />
+      <ReportChart />
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
 
@@ -142,7 +151,7 @@ function AdminDashboard() {
             {reports.slice(0, 5).map((report) => (
               <div key={report.id} className='flex justify-between px-4 py-3'>
                 <div>
-                  <p className='text-sm font-medium'>{report.title}</p>
+                  <p className='text-sm font-medium'>{report.title || report.category}</p>
                   <p className='text-xs text-stone-400'>
                     {report.category} · {report.location}
                   </p>
