@@ -37,7 +37,6 @@ function App() {
         }, 3000);
     
       return () => clearTimeout(timer);
-        
     }, []);
 
   const handleRoleChange = (newRole) => {
@@ -100,7 +99,7 @@ function App() {
           <div className='flex-1 flex flex-col overflow-hidden'>
             <Navbar title='Reports' user={user} />
             <main className='flex-1 bg-stone-50 overflow-y-auto'>
-              <ReportsPage role={role} />
+              <ReportsPage />
             </main>
           </div>
         </div>

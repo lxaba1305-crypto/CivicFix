@@ -4,11 +4,14 @@ import BackButton from '../buttons/BackButton';
 
 const STATUSES = ['All', 'pending', 'in progress', 'resolved'];
 
-function ReportsPage({ role }) {
+function ReportsPage() {
   const [reports, setReports] = useState([]);
   const [statusFilter, setStatusFilter] = useState('All');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [loading, setLoading] = useState(true);
+
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const role = user.role;  // always fresh from storage
 
   useEffect(() => {
     fetchReports();
@@ -99,6 +102,8 @@ function ReportsPage({ role }) {
     );
   }
 
+  console.log("REPORTS PAGE ROLE:", role);
+
   return (
     <div className='max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8 min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50'>
       <BackButton />
@@ -165,7 +170,7 @@ function ReportsPage({ role }) {
           <ReportCard 
             key={report.id} 
             report={report} 
-            role={role} 
+            role={role}
             onUpdate={() => fetchReports()}
             onDelete={() => fetchReports()}
           />
