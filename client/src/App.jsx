@@ -1,5 +1,5 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import AdminDashboard from './pages/AdminDashboard';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
@@ -28,17 +28,7 @@ function App() {
     return storedUser ? JSON.parse(storedUser) : null;
   });
   
-  useEffect(() => {
-    if (!loading)  return;
 
-      const timer = setTimeout(() => {
-            setLoading(false);
-            localStorage.setItem("hasVisitedCivicFix", "true")
-        }, 3000);
-    
-      return () => clearTimeout(timer);
-        
-    }, []);
 
   const handleRoleChange = (newRole) => {
     setRole(newRole);
@@ -57,7 +47,12 @@ function App() {
 
   return (
   <>
-   {loading && <WelcomeScreen />}
+   {loading && (<WelcomeScreen 
+   onFinish={() => {
+    setLoading(false);
+    localStorage.setItem("hasVisitedCivicFix", "true");
+   }}
+   />)}
 
   {!loading && (
     <Routes>

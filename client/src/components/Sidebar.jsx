@@ -13,20 +13,20 @@ const NavItems = ({ items, onNavigate }) => (
         to={item.path}
         onClick={onNavigate}
         className={({ isActive }) =>
-          `flex items-center justify-between px-3 rounded-lg text-sm transition w-full
+          `flex items-center justify-between px-4 py-2.5 rounded-xl text-sm transition-all duration-200 w-full group
           ${isActive
-            ? 'bg-green-50 text-green-700 font-medium'
-            : 'text-stone-500 hover:bg-green-50 hover:text-green-700'
+            ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold shadow-md'
+            : 'text-green-900 hover:bg-green-100 hover:text-green-700'
           }` 
         }
       >
-        <span className='flex items-center gap-2 py-1.5'>
+        <span className='flex items-center gap-3'>
           {item.icon}
           {item.label}
         </span>
 
         {item.badge > 0 && (
-          <span className='text-xs bg-yellow-100 text-yellow-700 rounded-full px-2 py-1 '>
+          <span className='text-xs bg-white/90 text-emerald-700 rounded-full px-2 py-1 font-semibold shadow-sm'>
             {item.badge}
           </span>
         )}
@@ -105,36 +105,38 @@ console.log('Sidebar role:', userRole);
 
   return (
     <>
-    <div className="hidden md:flex h-screen w-60 bg-white border-r border-stone-200 shrink-0 flex-col">
+    <div className="hidden md:flex h-screen w-64 bg-gradient-to-b from-green-50 via-white to-emerald-50 border-r border-green-100 shrink-0 flex-col shadow-lg">
       {/* LOGO */}
-      <div className="flex justify-center items-center border-b border-stone-100">
+      <div className="flex justify-center items-center gap-2 border-b border-green-100 py-4 bg-white/70 backdrop-blur-sm">
         <img src={logo} alt='CivicFix Logo' className='w-15 h-15' />
-        CivicFix
+        <span className='text-xl font-bold text-green-900 tracking-wide'>
+          CivicFix
+        </span>
       </div>
       {/* NAV */}
-      <nav className="flex flex-col gap-1 px-3 py-8 flex-1">
+      <nav className="flex flex-col gap-2 px-4 py-8 flex-1">
         <NavItems items={navItems} onNavigate={() => setOpen(false)} />
       </nav>
 
       {/* BOTTOM */}
-      <div className='px-4 py-4 border-t border-stone-100 flex items-center gap-3'>
+      <div className='px-4 py-5 border-t border-green-100 flex items-center gap-3 bg-white/70 backdrop-blur-sm'>
         
-        <div className='w-7 h-7 rounded-full bg-green-100 text-green-700 text-xs font-medium flex items-center justify-center'>
-          {userName?.charAt(0)?.toUpperCase}
+        <div className='w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 text-white text-sm font-bold flex items-center justify-center shadow-md'>
+          {userName?.charAt(0)?.toUpperCase()}
         </div>
 
         <div className='flex flex-col flex-1'>
-          <span className='text-xs font-medium text-stone-700'>
+          <span className='text-sm font-semibold text-green-900'>
             {userName}
           </span>
-          <span className='text-xs text-stone-400'>
+          <span className='text-xs text-green-700/70 truncate'>
             {userEmail} 
           </span>
         </div>
 
         <button 
           onClick={handleLogout} 
-          className='p-2 rounded-md text-red-500 hover:bg-red-100 transition'
+          className='p-2 rounded-xl text-red-500 hover:bg-red-100 transition shadow-sm'
         >
           <MdLogout className='h-5 w-5' />
         </button>
@@ -143,9 +145,9 @@ console.log('Sidebar role:', userRole);
     </div>
 
     {/* MOBILE TOPBAR */}
-    <div className='md:hidden fixed top-0 left-0 right-0 z-50 bg-white border-b border-stone-200 flex items-center justify-between px-4 h-14'>
+    <div className='md:hidden fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-green-100 flex items-center justify-between px-4 h-14 shadow-sm'>
       <img src={logo} alt="CivicFix Logo" className='h-10 w-auto' />
-      <button onClick={() => setOpen(!open)} className='p-2 rounded-lg text-stone-500 hover:bg-stone-100 transition'>
+      <button onClick={() => setOpen(!open)} className='p-2 rounded-xl text-green-800 hover:bg-green-100 transition'>
         {open ? <MdClose className='h-5 w-5' /> : <MdMenu className='h-5 w-5'/>}
       </button>
     </div>
@@ -154,24 +156,26 @@ console.log('Sidebar role:', userRole);
     {open && (
       <div className='md:hidden fixed inset-0 z-40 flex'>
         {/* BACKDROP */}
-        <div className='absolute inset-0 bg-black/20' onClick={() => setOpen(false)}>
+        <div className='absolute inset-0 bg-black/30 backdrop-blur-sm' onClick={() => setOpen(false)}>
         {/* DRAWER */}
-        <div className='relative w-64 bg-white h-full flex flex-col shadow-lg mt-14'>
-          <nav className='flex flex-col gap-1 px-3 py-4 flex-1'>
+        <div className='relative w-72 bg-gradient-to-b from-green-50 via-white to-emerald-50 h-full flex flex-col shadow-2xl mt-14 border-r border-green-100'>
+          <nav className='flex flex-col gap-2 px-4 py-6 flex-1'>
             <NavItems 
               items={navItems}
               onNavigate={() => setOpen(false)} />
           </nav>
 
           {/* BOTTOM */}
-          <div className='px-4 py-4 border-t border-stone-100 flex items-center gap-3'>
-            <div className='w-7 h-7 rounded-full bg-green-100 text-green-700 text-xs font-medium flex items-center justify-center'>AD</div>
-
-            <div className='flex flex-col flex-1'>
-              <span className='text-xs font-medium text-stone-700'>Admin</span>
-              <span className="text-xs text-stone-400">admin@civicfix.com</span>
+          <div className='px-4 py-5 border-t border-green-100 flex items-center gap-3 bg-white/60 backdrop-blur-sm'>
+            <div className='w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 text-white text-sm font-bold flex items-center justify-center shadow-md'>
+              {userName?.charAt(0)?.toUpperCase()}
             </div>
-            <button onClick={handleLogout} className="p-2 rounded-md text-red-500 hover:bg-red-100 transition">
+
+            <div className='flex flex-col flex-1 min-w-0'>
+              <span className='text-sm font-semibold text-green-900 truncate'>{userName}</span>
+              <span className="text-xs text-green-700/70 truncate">{userEmail}</span>
+            </div>
+            <button onClick={handleLogout} className="p-2 rounded-xl text-red-500 hover:bg-red-100 transition shadow-sm">
               <MdLogout className="h-5 w-5" />
             </button>
           </div>
