@@ -10,7 +10,7 @@ const UserDashboard = () => {
 
   useEffect(() => {
     fetchReports();
-  })
+  }, []);
 
   const fetchReports = async () => {
     const { data, error } = await supabase
