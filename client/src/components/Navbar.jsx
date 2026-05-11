@@ -1,6 +1,6 @@
 import { MdNotificationsNone } from "react-icons/md";
 
-function Navbar({ title, user, onNew, notificationCount = 0 }) {
+function Navbar({ title, user, notificationCount = 0 }) {
   
   return (
     <nav className="w-full bg-white border-b border-stone-200 px-6 h-14 flex items-center">
