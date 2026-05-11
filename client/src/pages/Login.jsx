@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BackButton from "../buttons/BackButton";
 
 function Login() {
@@ -7,9 +7,12 @@ function Login() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
+    const navigate = useNavigate();
+
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        // Handle login logic here
+    e.preventDefault();
+
+    try {
         const res = await fetch('http://localhost:5000/auth/login', {
             method: 'POST',
             headers: {
@@ -19,19 +22,30 @@ function Login() {
         });
 
         const data = await res.json();
+
         if (!res.ok) {
             setError(data.error || "Login failed");
             return;
         }
 
+        console.log("LOGGED IN USER:", data.user);
+
         localStorage.setItem('user', JSON.stringify(data.user));
 
-        if (data.user.role === 'admin') {
-            window.location.href = '/admin';
+        // NEVER reassign data or user variables
+        const role = data.user.role;
+
+        if (role === 'admin') {
+            navigate('/admin');
         } else {
-            window.location.href = '/dashboard';
+            navigate('/dashboard');
         }
-    };
+
+    } catch (err) {
+        console.log(err);
+        setError("Server error. Please try again.");
+    }
+};
 
     return (
         <div className="min-h-screen bg-stone-50 flex items-center justify-center px-4">

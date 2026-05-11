@@ -6,20 +6,20 @@ export const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Validate required fields
+    // VALIDATE REQUIRED FIELDS
     if (!name || !email || !password) {
       return res.status(400).json({
         error: 'All fields are required',
       });
     }
 
-    // Hash password
+    // HASH PASSWORD
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Assign role based on email
+    // ASSIGN ROLE BASED ON EMAIL
     const role = email.endsWith('@admin') ? 'admin' : 'user';
 
-    // Insert user into Supabase
+    // INSERT USER INTO SUPABASE
     const { data, error } = await supabase
       .from('users')
       .insert([
@@ -59,14 +59,14 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validate required fields
+    // VALIDATE REQIURED EMAILS
     if (!email || !password) {
       return res.status(400).json({
         error: 'Email and password are required',
       });
     }
 
-    // Find user by email
+    // FIND USER BY EMAIL
     const { data: user, error } = await supabase
       .from('users')
       .select('*')
@@ -79,7 +79,7 @@ export const login = async (req, res) => {
       });
     }
 
-    // Compare password
+    // COMPARE PASSWORD
     const validPassword = await bcrypt.compare(
       password,
       user.password
@@ -91,7 +91,7 @@ export const login = async (req, res) => {
       });
     }
 
-    // Ensure admin accounts use @admin emails
+    // ENSURE ADMIN ACCOUNTS USE @ADMIN EMAILS
     if (
       user.role === 'admin' &&
       !user.email.endsWith('@admin')
