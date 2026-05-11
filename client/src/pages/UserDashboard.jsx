@@ -37,7 +37,7 @@ const UserDashboard = () => {
 
   if (loading) {
     return (
-      <div className="p-6 text-sm text-stone-500">
+      <div className="p-6 text-sm text-green-700 animate-pulse">
         Loading dashboard...
       </div>
     );
@@ -49,11 +49,12 @@ const UserDashboard = () => {
 })}
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8">
+    <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8 min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
       <BackButton />
       
       <div>
-        <h2 className="text-xl font-medium text-stone-800 mb-4">Welcome to your Dashboard</h2>
+        <h2 className="text-3xl font-medium text-green-900 mb-2">Welcome to your Dashboard</h2>
+        <p className="text-sm text-green-700 mb-6">Help Improve your community by reporting local issues quickly and easily.</p>
         <ReportForm onSubmit={handleSubmit} />
       </div>
 

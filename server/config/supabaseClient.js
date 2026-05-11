@@ -8,10 +8,11 @@ const supabase = createClient(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_ANON_KEY,
     {
-        realtime: {
-            transport: ws,
-        },
+       realtime: {
+        transport: ws,
+       },
     }
 );
+
 
 export default supabase;

@@ -94,31 +94,31 @@ function UsersPage() {
 
   if (loading) {
     return (
-      <div className='p-6 text-sm text-stone-500'>
+      <div className='p-6 text-sm text-green-700'>
         Loading users...
       </div>
     );
   }
 
   return (
-    <div className='max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8'>
+    <div className='max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8 min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50'>
       <BackButton />
 
       {/* HEADER */}
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-xl font-medium text-stone-800'>Users</h1>
-          <p className='text-xs text-stone-400 mt-0.5'>{users.length} total users</p>
+          <h1 className='text-xl font-medium text-green-900'>Users</h1>
+          <p className='text-xs text-green-700 mt-1'>{users.length} total users</p>
         </div>
       </div>
 
       <hr className='border-0 border-t border-stone-200' />
 
       {/* TABLE */}
-      <div className='bg-white border border-stone-200 rounded-xl overflow-hidden'>
+      <div className='bg-white/90 backdrop-blur border border-green-100 shadow-lg rounded-2xl overflow-hidden'>
         
         {/* TABLE HEADER */}
-        <div className='grid grid-cols-12 gap-4 px-4 py-2.5 bg-stone-50 border-b border-stone-200 text-xs font-medium text-stone-400 uppercase tracking-wide'>
+        <div className='grid grid-cols-12 gap-4 px-4 py-2.5 bg-green-100 border-b border-green-200 text-xs font-medium text-stone-400 uppercase tracking-wide'>
           <div className='col-span-4'>User</div>
           <div className='col-span-2'>Role</div>
           <div className='col-span-2'>Reports</div>
@@ -129,7 +129,7 @@ function UsersPage() {
         {/* ROWS */}
         <div className='divide-y divide-stone-100'>
           {users.map((user, i) => (
-            <div key={user.id} className='grid grid-cols-12 gap-4 px-4 py-3 items-center hover:bg-stone-50 transition'>
+            <div key={user.id} className='grid grid-cols-12 gap-4 px-4 py-3 items-center hover:bg-green-50 transition'>
               
               {/* USER */}
               <div className='col-span-4 flex items-center gap-3 min-w-0'>
@@ -155,7 +155,7 @@ function UsersPage() {
               <div className='col-span-2'>
                 <Link
                   to='/reports'
-                  className='text-sm text-stone-700 hover:text-green-600 transition font-medium'
+                  className='text-sm text-green-800 hover:text-green-600 transition font-semibold'
                 >
                   {user.reports || 0}
                   <span className='text-xs text-stone-400 font-normal ml-1'>reports</span>
@@ -175,7 +175,7 @@ function UsersPage() {
               <div className='col-span-2'>
                 <button
                   onClick={() => handleDeleteUser(user.id)}
-                  className='text-xs font-medium px-3 py-1.5 bg-red-50 text-red-500 hover:bg-red-100 rounded-lg transition'
+                  className='text-xs font-medium px-3 py-1.5 bg-red-100 text-red-600 hover:bg-red-200 shadow-sm rounded-lg transition'
                 >
                   Delete
                 </button>

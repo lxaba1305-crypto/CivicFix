@@ -51,7 +51,7 @@ function ReportCard({ report, role, onUpdate, onDelete }) {
 
   return (
     <div> 
-      <div className='flex flex-col gap-4 w-full bg-white border border-gray-300 rounded-xl p-5'>
+      <div className='flex flex-col gap-4 w-full bg-white border border-green-100 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-5'>
 
         {/* REPORTS */}
         <div>
