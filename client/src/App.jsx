@@ -1,6 +1,5 @@
-
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AdminDashboard from './pages/AdminDashboard';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
@@ -13,13 +12,36 @@ import ReportsPage from './pages/ReportsPage';
 import UsersPage from './pages/UsersPage';
 
 function App() {
-  const [showIntro, setShowIntro] = useState(true);
-  const [role, setRole] = useState('user');
+  const [loading, setLoading] = useState(() => {
+    return !localStorage.getItem("hasVisitedCivicFix");
+  });
 
   const navigate = useNavigate();
+
+  const [role, setRole] = useState(() => {
+    const storedUser = localStorage.getItem('user');
+  });
   
+  useEffect(() => {
+    if (loading) {
+      const timer = setTimeout(() => {
+            setLoading(false);
+            localStorage.setItem("hasVisitedCivicFix", "true")
+        }, 3000);
+    }
+      return () => { 
+        if (timer) {
+          clearTimeout(timer);
+        }
+    };
+   }, [loading]);
+
   const handleRoleChange = (newRole) => {
     setRole(newRole);
+
+    const storedUser = JSON.parse(localStorage.getItem('user')) || {};
+    storedUser.role = newRole;
+    localStorage.setItem('user', JSON.stringify(storedUser));
 
     if (newRole === "admin") {
       navigate("admin");
@@ -30,10 +52,9 @@ function App() {
 
   return (
   <>
-   {showIntro && (
-    <WelcomeScreen onFinish={() => setShowIntro(false)} />
-    )}
+   {loading && <WelcomeScreen />}
 
+  {!loading && (
     <Routes>
       {/* PUBLIC */}
       <Route path='/' element={<HomePage />} />
@@ -93,6 +114,7 @@ function App() {
         </div>
       } />
     </Routes>
+  )}
     </>
   )
 }
