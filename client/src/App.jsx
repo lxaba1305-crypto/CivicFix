@@ -20,6 +20,7 @@ function App() {
 
   const [role, setRole] = useState(() => {
     const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser).role : null;
   });
   
   useEffect(() => {
@@ -44,7 +45,7 @@ function App() {
     localStorage.setItem('user', JSON.stringify(storedUser));
 
     if (newRole === "admin") {
-      navigate("admin");
+      navigate("/admin");
     } else {
       navigate("/dashboard");
     }

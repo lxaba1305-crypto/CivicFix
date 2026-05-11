@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient.js';
 import ReportCard from '../components/ReportCard';
 import BackButton from '../buttons/BackButton';
 
-const STATUSES = ['All', 'Pending', 'In Progress', 'Resolved'];
+const STATUSES = ['All', 'pending', 'in progress', 'resolved'];
 
 function ReportsPage({ role }) {
   const [reports, setReports] = useState([]);
@@ -15,55 +14,61 @@ function ReportsPage({ role }) {
     fetchReports();
   }, []);
 
-  //FETCH REPORTS
+  // FETCH REPORTS FROM BACKEND API
   const fetchReports = async () => {
-    const { data, error } = await supabase
-      .from('Reports')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      console.log(error);
+    try {
+      const response = await fetch('http://localhost:5000/reports');
+      const data = await response.json();
+      
+      if (data && Array.isArray(data)) {
+        setReports(data);
+      } else {
+        console.error('Invalid reports data:', data);
+        setReports([]);
+      }
+    } catch (error) {
+      console.error('Error fetching reports:', error);
+      setReports([]);
+    } finally {
       setLoading(false);
-      return;
     }
-
-    setReports(data || []);
-    setLoading(false);
   };
 
-  //UPDATE STATUS
+  // UPDATE STATUS
   const updateStatus = async (id, newStatus) => {
-    const { error } = await supabase
-      .from('Reports')
-      .update({ status: newStatus })
-      .eq('id', id);
-
-    if (error) {
-      console.log(error);
-      return;
+    try {
+      const response = await fetch(`http://localhost:5000/reports/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: newStatus })
+      });
+      
+      if (response.ok) {
+        fetchReports();
+      }
+    } catch (error) {
+      console.error('Error updating report:', error);
     }
-
-    // REFRESH REPORTS
-    fetchReports();
   };
 
   // DELETE REPORT
   const deleteReport = async (id) => {
-    const { error } = await supabase
-      .from('Reports')
-      .delete()
-      .eq('id', id);
-
-    if (error) {
-      console.log(error);
-      return;
+    try {
+      const response = await fetch(`http://localhost:5000/reports/${id}`, {
+        method: 'DELETE'
+      });
+      
+      if (response.ok) {
+        fetchReports();
+      }
+    } catch (error) {
+      console.error('Error deleting report:', error);
     }
-
-    fetchReports();
   };
 
-  // CATEGIRY FILTERS
+  // CATEGORY FILTERS
   const CATEGORIES = [
     'All',
     ...new Set(
