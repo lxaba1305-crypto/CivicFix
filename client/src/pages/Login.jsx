@@ -50,7 +50,7 @@ function Login() {
 
     return (
       <div style={{ backgroundImage: `url(${backgroundImage})` }} className="relative bg-cover bg-center w-full min-h-screen">
-    <div className="min-h-screen bg-stone-50 flex items-center justify-center px-4">
+    <div className="min-h-screen w-full bg-black/50 flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <BackButton />
 
