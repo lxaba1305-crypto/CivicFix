@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import ReportCard from '../components/ReportCard';
 import ReportChart from '../components/ReportChart';
 import ReportForm from '../components/ReportForm';
 import StatsCard from '../components/StatsCard';
 import BackButton from '../buttons/BackButton';
-import { Link } from 'react-router-dom';
+
 
 function getInitials(name = '') {
   return name
@@ -29,45 +28,6 @@ function AdminDashboard() {
   const [users, setUsers] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
-  useEffect(() => {
-    fetchReports();
-  }, []);
-
-  // =========================
-  // FETCH REPORTS
-  // =========================
-  const fetchReports = async () => {
-    const { data, error } = await supabase
-      .from('Reports')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      console.log('Reports error:', error.message);
-      return;
-    }
-
-    const safeData = data || [];
-    setReports(safeData);
-    buildUsersFromReports(safeData);
-  };
-
-  // =========================
-  // CREATE REPORT (ADMIN)
-  // =========================
-  const addReport = async (newReport) => {
-    const { error } = await supabase
-      .from('Reports')
-      .insert([newReport]);
-
-    if (error) {
-      console.log('Insert error:', error.message);
-      return;
-    }
-
-    fetchReports();
-    setShowForm(false);
-  };
 
   // =========================
   // BUILD USERS FROM REPORTS
@@ -92,6 +52,46 @@ function AdminDashboard() {
     });
 
     setUsers(Object.values(grouped));
+  };
+
+  // =========================
+  // FETCH REPORTS
+  // =========================
+  useEffect(() => {
+    const fetchReports = async () => {
+      const { data, error } = await supabase
+        .from('Reports')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.log('Reports error:', error.message);
+        return;
+      }
+
+      const safeData = data || [];
+      setReports(safeData);
+      buildUsersFromReports(safeData);
+    };
+
+    fetchReports();
+  }, []);
+
+  // =========================
+  // CREATE REPORT (ADMIN)
+  // =========================
+  const addReport = async (newReport) => {
+    const { error } = await supabase
+      .from('Reports')
+      .insert([newReport]);
+
+    if (error) {
+      console.log('Insert error:', error.message);
+      return;
+    }
+
+    fetchReports();
+    setShowForm(false);
   };
 
   return (

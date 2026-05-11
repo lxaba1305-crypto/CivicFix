@@ -27,9 +27,7 @@ function UsersPage() {
   const [loading, setLoading] = useState(true);
 
   // FETCH USERS
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+ 
 
   const fetchUsers = async () => {
     const { data, error } = await supabase
@@ -41,6 +39,7 @@ function UsersPage() {
       setLoading(false);
       return;
     }
+
 
     // GROUP USERS FORM REPORTS
     const groupedUsers = [];
@@ -71,8 +70,12 @@ function UsersPage() {
     setLoading(false);
   }
 
+     useEffect(() => {
+    fetchUsers();
+  }, []);
+
   // DELETE USERS
-  const handleDeleteUser = async (id) => {
+  async function handleDeleteUser(id) {
     const { error } = await supabase
       .from('Reports')
       .delete()
@@ -84,7 +87,7 @@ function UsersPage() {
     }
 
     setUsers(prev => prev.filter(user => user.id !== id));
-  };
+  }
 
   // UPDATE ROLE
   const handleRoleChange = async (id, newRole) => {
