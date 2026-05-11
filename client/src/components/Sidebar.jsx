@@ -35,10 +35,16 @@ const NavItems = ({ items, onNavigate }) => (
     </>
   );
 
-function Sidebar({ role, setRole }) {
+function Sidebar() {
   const [open, setOpen] = useState(false);
   const [reports, setReports] = useState([]);
   const navigate = useNavigate();
+
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+
+  const userName = storedUser?.name || 'Guest';
+  const userEmail = storedUser?.email || '';
+  const userRole = storedUser?.role || 'user';
 
   useEffect(() => {
     fetchReports();
@@ -64,7 +70,6 @@ function Sidebar({ role, setRole }) {
 
   const handleLogout = () => {
     localStorage.removeItem('user');
-    setRole(null);
     navigate('/login');
   }
        
@@ -77,7 +82,7 @@ function Sidebar({ role, setRole }) {
   {
     label: "Dashboard",
     icon: <MdOutlineDashboard />, 
-    path: role === "admin" ? "/admin" : "/dashboard",
+    path: userRole === "admin" ? "/admin" : "/dashboard",
   },
   {
     label: "Reports",
@@ -85,7 +90,7 @@ function Sidebar({ role, setRole }) {
     badge: pendingCount,
     path: "/reports",
   },
-  ...(role === "admin"
+  ...(userRole === "admin"
     ? [
         {
           label: "Users",
@@ -96,7 +101,7 @@ function Sidebar({ role, setRole }) {
   ),
 ]
 
-console.log('Sidebar role:', role);
+console.log('Sidebar role:', userRole);
 
   return (
     <>
@@ -113,18 +118,24 @@ console.log('Sidebar role:', role);
 
       {/* BOTTOM */}
       <div className='px-4 py-4 border-t border-stone-100 flex items-center gap-3'>
+        
         <div className='w-7 h-7 rounded-full bg-green-100 text-green-700 text-xs font-medium flex items-center justify-center'>
-          {role === "admin" ? "AD" : "UD"}
+          {userName?.charAt(0)?.toUpperCase}
         </div>
+
         <div className='flex flex-col flex-1'>
           <span className='text-xs font-medium text-stone-700'>
-            {role === "admin" ? "Admin" : "User"}
+            {userName}
           </span>
           <span className='text-xs text-stone-400'>
-            {role === "admin" ? "admin@civicfix.com" : "user@civicfix.com"} 
+            {userEmail} 
           </span>
         </div>
-        <button onClick={handleLogout} className='p-2 rounded-md text-red-500 hover:bg-red-100 transition'>
+
+        <button 
+          onClick={handleLogout} 
+          className='p-2 rounded-md text-red-500 hover:bg-red-100 transition'
+        >
           <MdLogout className='h-5 w-5' />
         </button>
 
