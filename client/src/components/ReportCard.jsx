@@ -79,8 +79,12 @@ function ReportCard({ report, role, onUpdate, onDelete }) {
               <p className='flex items-center gap-2 text-right'>
                 <CiCalendarDate />
                 {report.created_at
-                  ? new Date(report.created_at).toISOString()
-                  :"No date"}
+                  ? new Date(report.created_at).toLocaleDateString('en-ZA', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: 'numeric',
+                  })
+                : "No date"}
               </p>
           </div>
 
