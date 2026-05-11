@@ -93,25 +93,25 @@ function ReportsPage({ role }) {
 
   if (loading) {
     return (
-      <div className="p-6 text-sm text-stone-500">
+      <div className="p-6 text-sm text-green-700">
         Loading reports...
       </div>
     );
   }
 
   return (
-    <div className='max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8'>
+    <div className='max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8 min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50'>
       <BackButton />
 
       {/* HEADER */}
       <div className='flex flex-col'>
         {role === "user" ? (
           <>
-            <h1 className='text-2xl font-bold'>Recent community reports</h1>
-            <span className='text-sm font-meduim text-stone-500'>See what your neighbors are reporting in real time.</span>
+            <h1 className='text-2xl font-extrabold text-green-900'>Recent community reports</h1>
+            <span className='text-sm text-green-700 mt-1'>See what your neighbors are reporting in real time.</span>
           </>
         ) : (
-          <h1 className='text-2xl font-bold'>Reports</h1>
+          <h1 className='text-2xl font-bold text-green-900'>Reports</h1>
         )}
       </div>
 
@@ -122,7 +122,7 @@ function ReportsPage({ role }) {
         <select 
           value={statusFilter} 
           onChange={e => setStatusFilter(e.target.value)}
-          className='text-sm border border-stone-200 rounded-lg px-3 py-2 bg-white text-stone-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition'
+          className='text-sm border border-green-200 rounded-xl px-4 py-2 bg-white shadow-sm text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-400 transition'
         >
           {STATUSES.map(s => (
             <option key={s} value={s}>
@@ -136,7 +136,7 @@ function ReportsPage({ role }) {
         <select
           value={categoryFilter}
           onChange={e => setCategoryFilter(e.target.value)}
-          className='text-sm border border-stone-200 rounded-lg px-3 py-2 bg-white text-stone-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition'
+          className='text-sm border border-green-200 rounded-xl px-4 py-2 bg-white shadow-sm text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-400 transition'
         >
           {CATEGORIES.map(c => (
             <option key={c} value={c}>
@@ -145,7 +145,7 @@ function ReportsPage({ role }) {
           ))}
         </select>
 
-        <span className='text-xs text-stone-400 ml-auto'>
+        <span className='text-xs text-green-700 ml-auto'>
           {filtered.length} report{filtered.length !== 1 ? 's' : ''}
         </span>
         {(statusFilter !== 'All' || categoryFilter !== 'All') && (
