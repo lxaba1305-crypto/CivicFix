@@ -87,25 +87,8 @@ function AdminDashboard({ searchQuery = '' }) {
   // CREATE REPORT (ADMIN)
   // =========================
   const addReport = async (newReport) => {
-    try {
-      const response = await fetch('http://localhost:5000/reports', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newReport)
-      });
-
-      if (!response.ok) {
-        console.error('Failed to create report');
-        return;
-      }
-
       fetchReports();
       setShowForm(false);
-    } catch (error) {
-      console.error('Error creating report:', error);
-    }
   };
 
   // SEARCH FILTER

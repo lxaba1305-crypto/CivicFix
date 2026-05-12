@@ -1,11 +1,14 @@
 import { useState } from 'react';
 
 const ReportForm = ({ onSubmit, onClose }) => {
+  const loggedInUser = JSON.parse(localStorage.getItem('user') || '{}');
+
+  const [email, setEmail] = useState(loggedInUser.email || '');
+  const [name, setName] = useState(loggedInUser.name || '');
+
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -19,7 +22,9 @@ const ReportForm = ({ onSubmit, onClose }) => {
       category,
       description,
       location,
-      full_name: name,
+      full_name: name || loggedInUser.name,
+      email: email || loggedInUser.email,
+      user_id: loggedInUser.id,
       status: 'pending'
     };
 

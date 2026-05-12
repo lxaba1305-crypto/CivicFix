@@ -4,7 +4,8 @@ import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import { createClient } from "@supabase/supabase-js";
 import authRoutes from "./Routes/authRoutes.js";
-import reports from "./Routes/report.js";
+import reports from "./Routes/reportRoutes.js";
+import userRoutes from "./Routes/userRoutes.js";
 import ws from "ws";
 
 dotenv.config();
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRoutes);
 app.use("/reports", reports);
+app.use("/users", userRoutes);
 
 const PORT = process.env.PORT || 5000;
 

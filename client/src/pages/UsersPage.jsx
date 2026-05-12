@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BackButton from '../buttons/BackButton';
+import api from '../services/api';
 
 function getInitials(name = '') {
-  return name
-  .split(' ')
-  .map(n => n[0])
-  .join('')
-  .slice(0, 2)
-  .toUpperCase();
+  return (name || '')
+    .split(' ')
+    .map(n => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
 }
 
 const avatarColors = [
@@ -23,88 +24,58 @@ const avatarColors = [
 
 function UsersPage() {
   const [users, setUsers] = useState([]);
+  const [reportCounts, setReportCounts] = useState({});
   const [loading, setLoading] = useState(true);
 
-  // FETCH USERS FROM REPORTS
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:5000/reports');
-      const data = await response.json();
-      
-      if (!data || !Array.isArray(data)) {
-        console.error('Invalid data:', data);
-        setLoading(false);
-        return;
-      }
+      const [usersRes, reportsRes] = await Promise.all([
+        api.get('/users'),
+        api.get('/reports'),
+      ]);
 
-      // GROUP USERS FROM REPORTS
-      const groupedUsers = [];
+      setUsers(usersRes.data || []);
 
-      data.forEach((report) => {
-        const existingUser = groupedUsers.find(
-          user => user.email === report.email
-        );
-
-        if (existingUser) {
-          existingUser.reports += 1;
-        } else {
-          groupedUsers.push({
-            id: report.id,
-            name: report.full_name,
-            email: report.email,
-            reports: 1,
-            status: 'active',
-            role: 'user',
-            joined: new Date(report.created_at)
-              .toISOString()
-              .split('T')[0],
-          });
-        }
+      const counts = {};
+      (reportsRes.data || []).forEach(r => {
+        const key = r.user_id ?? r.email;
+        if (key) counts[key] = (counts[key] || 0) + 1;
       });
+      setReportCounts(counts);
 
-      setUsers(groupedUsers);
     } catch (error) {
       console.error('Error fetching users:', error);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  // DELETE USERS (from reports)
-  async function handleDeleteUser(id) {
+  const handleDeleteUser = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/reports/${id}`, {
-        method: 'DELETE'
-      });
-
-      if (!response.ok) {
-        console.error('Failed to delete report');
-        return;
-      }
-
+      await api.delete(`/users/${id}`);
       setUsers(prev => prev.filter(user => user.id !== id));
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Delete error:', error);
     }
-  }
+  };
+
+  // Get report count for a user
+  const getReportCount = (user) => {
+    return reportCounts[user.id] ?? reportCounts[user.email] ?? 0;
+  };
 
   if (loading) {
-    return (
-      <div className='p-6 text-sm text-green-700'>
-        Loading users...
-      </div>
-    );
+    return <div className='p-6 text-sm text-green-700'>Loading users...</div>;
   }
 
   return (
     <div className='max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8 min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50'>
       <BackButton />
 
-      {/* HEADER */}
       <div className='flex items-center justify-between'>
         <div>
           <h1 className='text-xl font-medium text-green-900'>Users</h1>
@@ -114,10 +85,7 @@ function UsersPage() {
 
       <hr className='border-0 border-t border-stone-200' />
 
-      {/* TABLE */}
       <div className='bg-white/90 backdrop-blur border border-green-100 shadow-lg rounded-2xl overflow-hidden'>
-        
-        {/* TABLE HEADER */}
         <div className='grid grid-cols-12 gap-4 px-4 py-2.5 bg-green-100 border-b border-green-200 text-xs font-medium text-stone-400 uppercase tracking-wide'>
           <div className='col-span-4'>User</div>
           <div className='col-span-2'>Role</div>
@@ -126,52 +94,43 @@ function UsersPage() {
           <div className='col-span-2'>Actions</div>
         </div>
 
-        {/* ROWS */}
         <div className='divide-y divide-stone-100'>
+          {users.length === 0 && (
+            <p className='text-xs text-stone-400 px-4 py-6 text-center'>No users found.</p>
+          )}
+
           {users.map((user, i) => (
             <div key={user.id} className='grid grid-cols-12 gap-4 px-4 py-3 items-center hover:bg-green-50 transition'>
-              
-              {/* USER */}
+
               <div className='col-span-4 flex items-center gap-3 min-w-0'>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium shrink-0 ${avatarColors[i % avatarColors.length]}`}>
-                  {getInitials(user.name)}
+                  {getInitials(user.name || user.email)}
                 </div>
                 <div className='min-w-0'>
-                  <p className='text-sm font-medium text-stone-800 truncate'>{user.name}</p>
-                  <p className='text-xs text-stone-400 truncate'>{user.email}</p>
+                  <p className='text-sm font-medium text-stone-800 truncate'>{user.name || '—'}</p>
+                  <p className='text-xs text-stone-400 truncate'>{user.email || '—'}</p>
                 </div>
               </div>
 
-              {/* ROLE */}
               <div className='col-span-2'>
-                <span className={`text-xs rounded-full px-2.5 py-1
-                  ${user.role === 'admin' ? 'bg-purple-50 text-purple-700' : 'bg-stone-100 text-stone-600'}
-                `}>
-                  {user.role}
+                <span className={`text-xs rounded-full px-2.5 py-1 ${user.role === 'admin' ? 'bg-purple-50 text-purple-700' : 'bg-stone-100 text-stone-600'}`}>
+                  {user.role || 'user'}
                 </span>
               </div>
 
-              {/* REPORTS */}
               <div className='col-span-2'>
-                <Link
-                  to='/reports'
-                  className='text-sm text-green-800 hover:text-green-600 transition font-semibold'
-                >
-                  {user.reports || 0}
+                <Link to='/reports' className='text-sm text-green-800 hover:text-green-600 transition font-semibold'>
+                  {reportCounts[user.email] || 0}
                   <span className='text-xs text-stone-400 font-normal ml-1'>reports</span>
                 </Link>
               </div>
 
-              {/* STATUS */}
               <div className='col-span-2'>
-                <span className={`text-xs rounded-full px-3 py-1
-                  ${user.status === 'active' ? 'bg-green-50 text-green-700' : 'bg-stone-100 text-stone-500'}
-                `}>
-                  {user.status}
+                <span className={`text-xs rounded-full px-3 py-1 ${user.status === 'active' ? 'bg-green-50 text-green-700' : 'bg-stone-100 text-stone-500'}`}>
+                  {user.status || 'active'}
                 </span>
               </div>
 
-              {/* ACTIONS */}
               <div className='col-span-2'>
                 <button
                   onClick={() => handleDeleteUser(user.id)}
@@ -185,7 +144,6 @@ function UsersPage() {
           ))}
         </div>
       </div>
-
     </div>
   );
 }

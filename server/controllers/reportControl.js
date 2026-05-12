@@ -16,7 +16,7 @@ export const getReports = async (req, res) => {
 
 export const createReport = async (req, res) => {
   try {
-    const { category, description, location, full_name, email } = req.body;
+    const { category, description, location, full_name, email, user_id } = req.body;
 
     const { data, error } = await supabase
       .from('Reports')
