@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import backgroundImage from '../images/background-img.jpg';
 
 function HomePage() {
@@ -20,14 +21,14 @@ function HomePage() {
         </p>
 
         <div className="flex flex-wrap items-center gap-3 mt-8">
-          <Link to="/signup" className="px-5 py-2.5 text-sm font-medium bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+          <Link to="/signup" className="px-7 py-3 text-sm font-semibold bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 transition">
             Report an Issue
           </Link>
-          <Link to="/login" className="px-5 py-2.5 text-sm font-medium border border-white text-white rounded-lg hover:bg-white hover:text-stone-800 transition">
+          <Link to="/login" className="px-7 py-3 text-sm font-semibold border border-white/30 backdrop-blur-md bg-white/10 text-white rounded-2xl hover:bg-white hover:text-stone-900 transition-all duration-300">
             Sign In
           </Link>
 
-      </div>
+      </motion.div>
 
         </div>
     </div>
