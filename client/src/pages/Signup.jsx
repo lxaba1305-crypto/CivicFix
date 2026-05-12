@@ -65,7 +65,7 @@ function Signup() {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-medium text-stone-500">Name</label>
+              <label className="text-xs font-medium text-stone-500">Full Name</label>
               <input className="px-3 py-2 text-sm border border-stone-200 rounded-lg bg-stone-50 focus:outline-none focus:ring-2 focus:ring-green-400 focus:bg-white transition"
                 type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
             </div>

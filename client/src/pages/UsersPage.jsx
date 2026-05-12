@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Oval } from "react-loader-spinner";
 import BackButton from '../buttons/BackButton';
 import api from '../services/api';
 
@@ -68,8 +69,25 @@ function UsersPage() {
     return reportCounts[user.id] ?? reportCounts[user.email] ?? 0;
   };
 
+  // LOADER SPINNER
   if (loading) {
-    return <div className='p-6 text-sm text-green-700'>Loading users...</div>;
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-green-50 via-white to-emerald-50">
+        <Oval
+          visible={true}
+          height={60}
+          width={60}
+          color="#22c55e"
+          secondaryColor="#bbf7d0"
+          strokeWidth={4}
+          strokeWidthSecondary={4}
+          ariaLabel="loading-dashboard"
+        />
+        <p className="text-sm text-green-700 font-medium">
+          Loading dashboard...
+        </p>
+      </div>
+    );
   }
 
   return (

@@ -175,7 +175,7 @@ console.log('Sidebar role:', userRole);
               <span className='text-sm font-semibold text-green-900 truncate'>{userName}</span>
               <span className="text-xs text-green-700/70 truncate">{userEmail}</span>
             </div>
-            <button onClick={handleLogout} className="p-2 rounded-xl text-red-500 hover:bg-red-100 transition shadow-sm">
+            <button onClick={handleLogout} className="p-2 rounded-xl text-red-500 hover:bg-red-100 transition shadow-sm cursor-pointer">
               <MdLogout className="h-5 w-5" />
             </button>
           </div>
