@@ -1,5 +1,5 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AdminDashboard from './pages/AdminDashboard';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
@@ -10,9 +10,15 @@ import UserDashboard from './pages/UserDashboard';
 import WelcomeScreen from './pages/WelcomeScreen';
 import ReportsPage from './pages/ReportsPage';
 import UsersPage from './pages/UsersPage';
+import IntroScreen from './pages/IntroScreen';
 
 function App() {
+  const [showIntro, setShowIntro] = useState(() => {
+    return !sessionStorage.getItem("hasVisitedCivicFix");
+  });
+
   const [loading, setLoading] = useState(true);
+
   const [searchQuery, setSearchQuery] = useState('');
 
   const navigate = useNavigate();
@@ -26,6 +32,16 @@ function App() {
     const storedUser = localStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : null;
   });
+
+  useEffect(() => {
+  if (showIntro) return;
+
+  const timer = setTimeout(() => {
+    setLoading(false);
+  }, 2500);
+
+  return () => clearTimeout(timer);
+}, [showIntro]);
   
 
 
@@ -46,12 +62,24 @@ function App() {
 
   return (
   <>
-   {loading && (<WelcomeScreen 
-   onFinish={() => {
-    setLoading(false);
-    localStorage.setItem("hasVisitedCivicFix", "true");
-   }}
-   />)}
+   {/* FIRST TIME CINEMATIC INTRO */}
+{showIntro && (
+  <IntroScreen
+    onFinish={() => {
+      sessionStorage.setItem("hasVisitedCivicFix", "true");
+      setShowIntro(false);
+    }}
+  />
+)}
+
+{/* NORMAL LOADING SCREEN */}
+{!showIntro && loading && (
+  <WelcomeScreen
+    onFinish={() => {
+      setLoading(false);
+    }}
+  />
+)}
 
   {!loading && (
     <Routes>
