@@ -13,6 +13,7 @@ import UsersPage from './pages/UsersPage';
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const navigate = useNavigate();
 
@@ -64,9 +65,9 @@ function App() {
         <div className='flex h-screen overflow-hidden'>
           <Sidebar role={role} setRole={handleRoleChange} />
           <div className='flex-1 flex flex-col overflow-hidden'>
-            <Navbar title='Admin' user={user} />
+            <Navbar title='Admin' user={user} showSearch={true} onSearch={setSearchQuery} />
             <main className='flex-1 bg-stone-50 overflow-y-auto'>
-              <AdminDashboard />
+              <AdminDashboard  searchQuery={searchQuery}/>
             </main>
           </div>
         </div>
@@ -91,9 +92,9 @@ function App() {
         <div className='flex h-screen overflow-hidden'>
           <Sidebar role={role} setRole={handleRoleChange} />
           <div className='flex-1 flex flex-col overflow-hidden'>
-            <Navbar title='Reports' user={user} />
+            <Navbar title='Reports' user={user} showSearch={true} onSearch={setSearchQuery} />
             <main className='flex-1 bg-stone-50 overflow-y-auto'>
-              <ReportsPage />
+              <ReportsPage  searchQuery={searchQuery} />
             </main>
           </div>
         </div>

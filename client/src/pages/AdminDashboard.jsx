@@ -22,11 +22,16 @@ const avatarColors = [
   'bg-orange-100 text-orange-700',
 ];
 
-function AdminDashboard() {
+const statusStyles = {
+  pending: 'bg-yellow-50 text-yellow-700 ring-1 ring-yellow-200',
+  'in progress': 'bg-blue-50 text-blue-700 ring-1 ring-blue-200',
+  resolved: 'bg-green-50 text-green-700 ring-1 ring-green-200',
+};
+
+function AdminDashboard({ searchQuery = '' }) {
   const [reports, setReports] = useState([]);
   const [users, setUsers] = useState([]);
   const [showForm, setShowForm] = useState(false);
-
 
   // =========================
   // BUILD USERS FROM REPORTS
@@ -103,27 +108,56 @@ function AdminDashboard() {
     }
   };
 
+  // SEARCH FILTER
+  const q = searchQuery.toLowerCase().trim();
+  console.log("q:", q, "reports:", reports.length);
+ 
+  const filteredReports = q
+    ? reports.filter(r =>
+        [r.description, r.category, r.location, r.full_name]
+          .some(field => field?.toLowerCase().includes(q))
+      )
+    : reports;
+ 
+  const filteredUsers = q
+    ? users.filter(u =>
+        [u.name, u.email]
+          .some(field => field?.toLowerCase().includes(q))
+      )
+    : users;
+
+    
   return (
-    <div className='max-w-7xl mx-auto px-6 py-8 flex flex-col gap-8'>
+    <div className='min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-8'>
 
       <BackButton />
 
       {/* HEADER */}
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-xl font-medium text-stone-800'>Admin Overview</h1>
+          <h1 className='text-xl font-medium text-green-800'>Admin Overview</h1>
           <p className='text-xs text-stone-400 mt-1'>Welcome back, Admin</p>
         </div>
 
         <button
           onClick={() => setShowForm(true)}
-          className='text-xs bg-green-600 text-white px-3 py-1 rounded-lg'
+          className='text-xs bg-green-600 hover:bg-green-700 text-white px-4 py-4 rounded-lg transition'
         >
           + New Report
         </button>
       </div>
 
       <hr className='border-0 border-t border-stone-200' />
+
+      {/* SEARCH RESULT LABEL */}
+      {q && (
+        <p className='text-xs text-green-700'>
+          Results for <span className='font-medium'>"{searchQuery}"</span>
+          {' '}— {filteredReports.length} report{filteredReports.length !== 1 ? 's' : ''},{' '}
+          {filteredUsers.length} user{filteredUsers.length !== 1 ? 's' : ''}
+        </p>
+      )}
 
       {/* FORM */}
       {showForm && (
@@ -141,59 +175,73 @@ function AdminDashboard() {
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
 
-        {/* REPORTS */}
-        <div className='bg-white border border-stone-200 rounded-xl overflow-hidden'>
-          <div className='px-4 py-3 border-b border-stone-100'>
-            <h2 className='text-sm font-medium'>Recent Reports</h2>
+        {/* RECENT REPORTS */}
+        <div className='bg-white/90 backdrop-blur border border-green-100 shadow-sm rounded-2xl overflow-hidden'>
+          <div className='px-4 py-3 border-b border-green-100 border-stone-100'>
+            <h2 className='text-sm font-medium'>{q ? 'Matching Reports' : 'Recent Reports'}</h2>
+            <span className='text-xs text-green-700'>{filteredReports.length}</span>
           </div>
 
           <div className='divide-y divide-stone-100'>
-            {reports.slice(0, 5).map((report) => (
-              <div key={report.id} className='flex justify-between px-4 py-3'>
-                <div>
-                  <p className='text-sm font-medium'>{report.title || report.category}</p>
-                  <p className='text-xs text-stone-400'>
+            {filteredReports.slice(0, 5).map((report) => (
+              <div key={report.id} className='flex items-center justify-between px-4 py-3 hover:bg-green-50 transition'>
+                <div className='min-w-0 mr-3'>
+                  <p className='text-sm font-medium text-stone-800 truncate'>
+                    {report.title || report.category}
+                  </p>
+                  <p className='text-xs text-stone-400 truncate'>
                     {report.category} · {report.location}
                   </p>
                 </div>
 
-                <span className='text-xs px-2 py-1 rounded bg-stone-100'>
+                <span className={`text-xs font-medium rounded-full px-2.5 py-1 shrink-0 ${statusStyles[report.status] || 'bg-stone-100 text-stone-500'}`}>
                   {report.status}
                 </span>
               </div>
             ))}
+
+            {filteredReports.length === 0 && (
+              <p className='text-xs text-stone-400 px-4 py-6 text-center'>No reports yet.</p>
+            )}
           </div>
         </div>
 
         {/* USERS */}
-        <div className='bg-white border border-stone-200 rounded-xl overflow-hidden'>
+        <div className='bg-white/90 backdrop-blur border border-green-100 shadow-sm rounded-2xl overflow-hidden'>
           <div className='px-4 py-3 border-b border-stone-100'>
-            <h2 className='text-sm font-medium'>Users</h2>
+            <h2 className='text-sm font-medium'>{q ? 'Matching Users' : 'Users'}</h2>
+            <span className='text-xs text-green-700'>{filteredUsers.length}</span>
           </div>
 
           <div className='divide-y divide-stone-100'>
-            {users.slice(0, 5).map((user, i) => (
-              <div key={user.email} className='flex justify-between px-4 py-3'>
+            {filteredUsers.slice(0, 5).map((user, i) => (
+              <div key={user.email} className='flex items-center justify-between px-4 py-3 hover:bg-green-50 transition'>
 
-                <div className='flex items-center gap-3'>
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs ${avatarColors[i % avatarColors.length]}`}>
+                <div className='flex items-center gap-3 min-w-0'>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium shrink-0 ${avatarColors[i % avatarColors.length]}`}>
                     {getInitials(user.name)}
                   </div>
 
-                  <div>
-                    <p className='text-sm font-medium'>{user.name}</p>
-                    <p className='text-xs text-stone-400'>{user.email}</p>
+                  <div className='min-w-0'>
+                    <p className='text-sm font-medium text-stone-800 truncate'>{user.name}</p>
+                    <p className='text-xs text-stone-400 truncate'>{user.email}</p>
                   </div>
                 </div>
 
-                <span className='text-xs text-stone-500'>
-                  {user.reportsCount} reports
+                <span className='text-xs text-stone-500 shrink-0 ml-3'>
+                  {user.reportsCount} report{user.reportsCount !== 1 ? 's' : ''}
                 </span>
-
               </div>
             ))}
+
+            {filteredUsers.length === 0 && (
+              <p className='text-xs text-stone-400 px-4 py-6 text-center'>
+                {q ? `No users matching "${searchQuery}".` : 'No users found.'}
+              </p>
+            )}
           </div>
         </div>
+      </div>
 
       </div>
     </div>

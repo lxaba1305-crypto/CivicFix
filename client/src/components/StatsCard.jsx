@@ -24,7 +24,7 @@ const StatsCard = ({ reports }) => {
   return (
     <div className='grid grid-cols-2 sm:grid-cols-4 gap-4 my-2'>
       {stats.map((stat) => (
-        <div key={stat.label} className='border border-stone-200 rounded-2xl p-4 flex flex-col gap-1'>
+        <div key={stat.label} className='border border-stone-200 rounded-2xl p-4 flex flex-col gap-1 bg-white'>
           <p className='text-xs text-stone-400'>{stat.label}</p>
           <p className='text-3xl font-medium'>{stat.value}</p>
         </div>

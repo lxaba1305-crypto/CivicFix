@@ -1,10 +1,11 @@
 import { MdNotificationsNone } from "react-icons/md";
+import { HiOutlineSearch } from "react-icons/hi";
 
-function Navbar({ title, user, notificationCount = 0 }) {
+function Navbar({ title, user, notificationCount = 0, onSearch, showSearch = false }) {
   
   return (
-    <nav className="w-full bg-white border-b border-stone-200 px-6 h-14 flex items-center">
-      <div className="w-full flex items-center justify-between gap-4">
+    <nav className="w-full bg-white border-b border-stone-200 px-4 sm:px-6 h-14 flex items-center">
+      <div className="w-full flex items-center justify-between gap-3">
 
         {/* LEFT — logo */}
         <div className="flex items-center gap-2 shrink-0">
@@ -13,14 +14,23 @@ function Navbar({ title, user, notificationCount = 0 }) {
         </div>
 
         {/* CENTER — search */}
-        <input
-          type="text"
-          placeholder="Search reports..."
-          className="w-full max-w-xs px-3 py-1.5 text-sm border border-stone-200 rounded-lg bg-stone-50 focus:outline-none focus:ring-2 focus:ring-green-400 focus:bg-white transition"
-        />
+        {showSearch && (
+          <div className="relative w-full max-w-sm">
+            <HiOutlineSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 text-sm pointer-events-none" />
+
+            <input
+            onChange={(e) => {
+            onSearch?.(e.target.value);
+            }}
+              type="text"
+              placeholder="Search reports..."
+              className="w-full pl-8 pr-3 py-1.5 text-sm border border-stone-200 rounded-lg bg-stone-50 focus:outline-none focus:ring-2 focus:ring-green-400 focus:bg-white transition"
+            />
+          </div>
+        )}
 
         {/* RIGHT — actions */}
-          <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-3 shrink-0">
 
           {/* Notifications */}
           <div className="relative">

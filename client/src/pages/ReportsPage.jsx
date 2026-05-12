@@ -4,7 +4,7 @@ import BackButton from '../buttons/BackButton';
 
 const STATUSES = ['All', 'pending', 'in progress', 'resolved'];
 
-function ReportsPage() {
+function ReportsPage({ searchQuery = '' }) {
   const [reports, setReports] = useState([]);
   const [statusFilter, setStatusFilter] = useState('All');
   const [categoryFilter, setCategoryFilter] = useState('All');
@@ -81,6 +81,8 @@ function ReportsPage() {
     )
   ];
 
+  const q = searchQuery.toLowerCase().trim();
+
   // FILTER REPORTS
   const filtered = reports.filter(r => {
     const matchStatus =
@@ -91,7 +93,10 @@ function ReportsPage() {
       categoryFilter === 'All' || 
       r.category === categoryFilter;
 
-    return matchStatus && matchCategory;
+    const matchSearch = !q || [r.description, r.category, r.location, r.full_name]
+    .some(field => field?.toLowerCase().includes(q));
+
+    return matchStatus && matchCategory && matchSearch;
   });
 
   if (loading) {
