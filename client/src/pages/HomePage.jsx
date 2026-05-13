@@ -2,26 +2,101 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import backgroundImage from '../images/background-img.jpg';
 
+function FloatingPaths({ position }) {
+  const paths = Array.from({ length: 24 }, (_, i) => ({
+    id: i,
+    d: `M-${380 - i * 5 * position} -${189 + i * 6}
+      C-${380 - i * 5 * position} -${189 + i * 6} 
+      -${312 - i * 5 * position} ${216 - i * 6}
+      ${152 - i * 5 * position} ${343 - i * 6}
+       C${616 - i * 5 * position} ${470 - i * 6}
+       ${684 - i * 5 * position} ${875 - i * 6}
+       ${684 - i * 5 * position} ${875 - i * 6}`,
+       width: 0.5 + i * 0.03,
+       duration: 18 + i * 0.5,
+  }));
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <svg className="w-full h-full text-emerald-300"
+      viewBox="0 0 696 316"
+      fill="none"
+      >
+      {paths.map((path) => (
+        <motion.path
+          key={path.id}
+          d={path.d}
+          stroke="currentColor"
+          strokeWidth={path.width}
+          strokeOpacity={0.12}
+          initial={{ pathLength: 0.3, opacity: 0.2 }}
+          animate={{ pathLength: 1,
+             opacity: [0.1, 0.3, 0.1 ],
+            pathOffset: [0, 1, 0],
+          }}
+             transition={{
+              duration: path.duration,
+              repeat: Infinity,
+              ease: 'linear',
+            }}
+        />
+      ))}
+      </svg>
+    </div>
+  );
+}
+
 function HomePage() {
   return (
-    <div style={{ backgroundImage: `url(${backgroundImage})` }} className="relative bg-cover bg-center w-full min-h-screen">
+    <div style={{ backgroundImage: `url(${backgroundImage})` }} className="relative bg-cover bg-center w-full min-h-screen overflow-hidden">
 
-      <div className="min-h-screen w-full bg-black/50 flex flex-col items-center justify-center px-4">
+      <div className="absolute inset-0 bg-black/60 "/>
+      
+      <div className="absolute inset-0">
+        <FloatingPaths position={1} />
+        <FloatingPaths position={-1} />
+        </div>
+        
+        <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-green-500/20 blur-3xl"/>
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-emerald-400/20 rounded-full blur-3xl"/>
 
-        <div className="flex items-center gap-2 mb-6">
-          <div className="w-2 h-2 rounded-full bg-green-400"/>
+        <div className="relative z-10 min-h-screen flex flex-col justify-center items-center px-4 text-center">
+
+        <motion.div
+        initial={{ opacity: 0, y: -40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="flex items-center gap-2 mb-6">
+          <div className="w-3 h-3 rounded-full bg-green-400 shadow-[0_0_20px_0_rgba(74,222,128,0.9)]"/>
           <span className="text-lg font-bold text-white">CivicFix</span>
-          </div>
+          </motion.div>
 
-        <h1 className="text-2xl sm:text-4xl text-white text-center max-w-lg leading-tight">
-            Your Streets, Your Voice. Fixed Faster.
-        </h1>
-        <p className="text-stone-300 text-sm mt-4 text-center max-w-sm">
+        <motion.h1
+          initial={{ opacity: 0, y: 60 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }} 
+        className="text-4xl sm:text-6xl font-black text-white max-w-4xl leading-tight">
+            Your Streets,
+            <span className="block bg-gradient-to-r from-green-300 to-emerald-400 bg-clip-text text-transparent">
+             Your Voice.
+             </span>
+              Fixed Faster.
+        </motion.h1>
+
+        <motion.p 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7 }}
+          className="text-stone-300 text-base sm:text-lg mt-6 max-w-2xl leading-relaxed">
             Report local issues in your community and track their resolution in real-time.
-        </p>
+        </motion.p>
 
-        <div className="flex flex-wrap items-center gap-3 mt-8">
-          <Link to="/signup" className="px-7 py-3 text-sm font-semibold bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 transition">
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        className="flex flex-wrap items-center gap-4 mt-10">
+          <Link to="/signup" className="px-7 py-3 text-sm font-semibold bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl shadow-xl hover:scale-105 hover:shadow-green-500/39 transition-all duration-300">
             Report an Issue
           </Link>
           <Link to="/login" className="px-7 py-3 text-sm font-semibold border border-white/30 backdrop-blur-md bg-white/10 text-white rounded-2xl hover:bg-white hover:text-stone-900 transition-all duration-300">
