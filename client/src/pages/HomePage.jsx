@@ -1,6 +1,12 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import backgroundImage from '../images/background-img.jpg';
+import HomeNavbar from '../components/HomeNavbar';
+import Footer from '../components/Footer';
+import ProcessSection from '../components/ProcessSection';
+import AboutSection from '../components/AboutSection';
+import StatsSection from '../components/StatsSection';
+import CTASection from '../components/CTASection';
 
 function FloatingPaths({ position }) {
   const paths = Array.from({ length: 24 }, (_, i) => ({
@@ -48,68 +54,70 @@ function FloatingPaths({ position }) {
 
 function HomePage() {
   return (
-    <div style={{ backgroundImage: `url(${backgroundImage})` }} className="relative bg-cover bg-center w-full min-h-screen overflow-hidden">
-
-      <div className="absolute inset-0 bg-black/60 "/>
+    <div>
+      <div style={{ backgroundImage: `url(${backgroundImage})` }} className="relative bg-cover bg-center w-full min-h-screen overflow-hidden">
       
-      <div className="absolute inset-0">
-        <FloatingPaths position={1} />
-        <FloatingPaths position={-1} />
+        <HomeNavbar />
+
+        <div className="absolute inset-0 bg-black/60" />
+      
+        <div className="absolute inset-0">
+          <FloatingPaths position={1} />
+          <FloatingPaths position={-1} />
         </div>
         
-        <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-green-500/20 blur-3xl"/>
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-emerald-400/20 rounded-full blur-3xl"/>
+        <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-green-500/20 blur-3xl" />
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-emerald-400/20 rounded-full blur-3xl" />
 
         <div className="relative z-10 min-h-screen flex flex-col justify-center items-center px-4 text-center">
 
-        <motion.div
-        initial={{ opacity: 0, y: -40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-        className="flex items-center gap-2 mb-6">
-          <div className="w-3 h-3 rounded-full bg-green-400 shadow-[0_0_20px_0_rgba(74,222,128,0.9)]"/>
-          <span className="text-lg font-bold text-white">CivicFix</span>
+          <motion.div
+          initial={{ opacity: 0, y: -40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="flex items-center gap-2 mb-6">
+            <div className="w-3 h-3 rounded-full bg-green-400 shadow-[0_0_20px_0_rgba(74,222,128,0.9)]"/>
+            <span className="text-lg font-bold text-white">CivicFix</span>
           </motion.div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 60 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }} 
-        className="text-4xl sm:text-6xl font-black text-white max-w-4xl leading-tight">
-            Your Streets,
-            <span className="block bg-gradient-to-r from-green-300 to-emerald-400 bg-clip-text text-transparent">
-             Your Voice.
-             </span>
-              Fixed Faster.
-        </motion.h1>
+          <motion.h1
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }} 
+            className="text-4xl sm:text-6xl font-black text-white max-w-4xl leading-tight">
+              Your Streets,
+              <span className="block bg-gradient-to-r from-green-300 to-emerald-400 bg-clip-text text-transparent">
+                Your Voice.
+              </span>
+                Fixed Faster.
+          </motion.h1>
 
-        <motion.p 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.7 }}
-          className="text-stone-300 text-base sm:text-lg mt-6 max-w-2xl leading-relaxed">
-            Report local issues in your community and track their resolution in real-time.
-        </motion.p>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-        className="flex flex-wrap items-center gap-4 mt-10">
-          <Link to="/signup" className="px-7 py-3 text-sm font-semibold bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl shadow-xl hover:scale-105 hover:shadow-green-500/39 transition-all duration-300">
-            Report an Issue
-          </Link>
-          <Link to="/login" className="px-7 py-3 text-sm font-semibold border border-white/30 backdrop-blur-md bg-white/10 text-white rounded-2xl hover:bg-white hover:text-stone-900 transition-all duration-300">
-            Sign In
-          </Link>
-
-      </motion.div>
-
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            className="text-stone-300 text-base sm:text-lg mt-6 max-w-2xl leading-relaxed">
+              Report local issues in your community and track their resolution in real-time.
+          </motion.p>
         </div>
+      </div>
+
+      {/* ABOUT SECTION */}
+      <AboutSection />
+
+      {/* STATS SECTION */}
+      <StatsSection />
+
+      {/* PROCESS ON HOW TO REPORT */}
+      <ProcessSection />
+
+      {/* CALL TO ACTION SECTION */}
+      <CTASection />
+      
+      {/* FOOTER */}
+      <Footer /> 
     </div>
-   
-    
-)
+  )
 }
 
 export default HomePage;
