@@ -11,6 +11,7 @@ import WelcomeScreen from './pages/WelcomeScreen';
 import ReportsPage from './pages/ReportsPage';
 import UsersPage from './pages/UsersPage';
 import IntroScreen from './pages/IntroScreen';
+import { supabase } from './supabaseClient';
 
 function App() {
   const [showIntro, setShowIntro] = useState(() => {
@@ -42,8 +43,6 @@ function App() {
 
   return () => clearTimeout(timer);
 }, [showIntro]);
-  
-
 
   const handleRoleChange = (newRole) => {
     setRole(newRole);
@@ -59,6 +58,12 @@ function App() {
       navigate("/dashboard");
     }
   };
+
+  useEffect(() => {
+  supabase.auth.getSession().then(({ data }) => {
+    console.log("SESSION:", data.session);
+  });
+}, []);
 
   return (
   <>

@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GoTag } from 'react-icons/go';
 import { CiLocationOn, CiCalendarDate } from 'react-icons/ci';
 import { BsPerson } from 'react-icons/bs';
+import { BsHandThumbsUp, BsHandThumbsUpFill } from "react-icons/bs";
 import { supabase } from '../supabaseClient';
 
 const STATUS_OPTIONS = [
@@ -28,6 +29,9 @@ const statusStyles = {
 function ReportCard({ report, role, onUpdate, onDelete }) {
   const [loading, setLoading] = useState(false);
   const [currentStatus, setCurrentStatus] = useState(report.status);
+  const [upvotes, setUpvotes] = useState(report.upvotes || 0);
+  const [upvoting, setUpvoting] = useState(false);
+  const [hasUpvoted, setHasUpvoted] = useState(false);
 
   // UPDATE STATUS
   const updateStatus = async (newStatus) => {
@@ -67,6 +71,96 @@ function ReportCard({ report, role, onUpdate, onDelete }) {
 
     setLoading(false);
   };
+
+  // LOAD IF USER ALREADY VOTED
+  useEffect(() => {
+    const checkIfUpvoted = async () => {
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      if (!storedUser) return;
+
+      const { data, error } = await supabase
+        .from('report_upvotes')
+        .select('id')
+        .eq('report_id', report.id)
+        .eq('user_id', storedUser.id)
+        .maybeSingle();
+
+      if (!error) {
+        setHasUpvoted(!!data);
+      };
+    };
+
+    checkIfUpvoted();
+  }, [report.id]);
+
+  // UPVOTE REPORT
+  const handleUpvote = async () => {
+  if (upvoting) return;
+
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+
+  if (!storedUser) {
+    alert('Please log in to vote.');
+    return;
+  }
+
+  setUpvoting(true);
+
+  // CHECK IF VOTE EXIST
+  const { data: existingVote, error: checkError } = await supabase
+    .from('report_upvotes')
+    .select('id')
+    .eq('report_id', report.id)
+    .eq('user_id', storedUser.id)
+    .maybeSingle();
+
+  if (checkError) {
+    console.log('Check error:', checkError.message);
+    setUpvoting(false);
+    return;
+  }
+
+  // IF ALREADY VOTED → UNDO VOTE
+  if (existingVote) {
+    const { error: deleteError } = await supabase
+      .from('report_upvotes')
+      .delete()
+      .eq('id', existingVote.id);
+
+    if (deleteError) {
+      console.log('Undo vote error:', deleteError.message);
+      setUpvoting(false);
+      return;
+    }
+
+    setHasUpvoted(false);
+    setUpvotes((prev) => Math.max(prev - 1, 0));
+
+    onUpdate?.();
+    setUpvoting(false);
+    return;
+  }
+
+  // 3. OTHERWISE → INSERT VOTE
+  const { error: insertError } = await supabase
+    .from('report_upvotes')
+    .insert({
+      report_id: report.id,
+      user_id: storedUser.id,
+    });
+
+  if (insertError) {
+    console.log('Upvote error:', insertError.message);
+    setUpvoting(false);
+    return;
+  }
+
+  setHasUpvoted(true);
+  setUpvotes((prev) => prev + 1);
+
+  onUpdate?.();
+  setUpvoting(false);
+};
 
   const style = statusStyles[currentStatus] || statusStyles.pending;
 
@@ -113,6 +207,29 @@ function ReportCard({ report, role, onUpdate, onDelete }) {
                   })
                 : "No date"}
               </p>
+          </div>
+
+          {/* UPVOTE BUTTON */}
+          <div className='pt-3 border-t border-stone-100'>
+            <button
+              onClick={handleUpvote}
+              disabled={upvoting}
+              className={`flex items-center gap-2 text-sm font-medium transition-colors duration-200 ${
+                hasUpvoted
+                  ? 'text-green-600'
+                  : 'text-stone-600 hover:text-green-600'
+              }`}
+            >
+              {hasUpvoted ? (
+                <BsHandThumbsUpFill className='text-green-600 w-5 h-5' />
+              ) : (
+                <BsHandThumbsUp className='text-stone-400 w-5 h-5' />
+              )}
+
+              <span>{upvotes}</span>
+              <span>{upvotes === 1 ? 'Upvote' : 'Upvotes'}</span>
+            </button>
+
           </div>
 
           {/* Admin only actions */}
