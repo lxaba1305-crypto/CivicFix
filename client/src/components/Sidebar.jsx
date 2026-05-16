@@ -38,11 +38,12 @@ const NavItems = ({ items, onNavigate }) => (
 function Sidebar() {
   const [open, setOpen] = useState(false);
   const [reports, setReports] = useState([]);
+  
   const navigate = useNavigate();
 
   const storedUser = JSON.parse(localStorage.getItem('user'));
 
-  const userName = storedUser?.name || 'Guest';
+  const userName = storedUser?.full_name || 'Guest';
   const userEmail = storedUser?.email || '';
   const userRole = storedUser?.role || 'user';
 

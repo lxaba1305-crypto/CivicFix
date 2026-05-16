@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { supabase } from '../supabaseClient';
 
 const ReportForm = ({ onSubmit, onClose }) => {
   const storedUser = localStorage.getItem('user');
@@ -10,8 +11,37 @@ const ReportForm = ({ onSubmit, onClose }) => {
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
+  const [image, setImage] = useState(null);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // UPLOAD IMAGE
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+  };
+
+  const uploadImage = async () => {
+    if (!image) return null;
+
+    const fileName = `${Date.now()}-${image.name}`;
+
+    const { data, error } = await supabase.storage
+      .from('report-images')
+      .upload(fileName, image);
+
+    if (error) {
+      console.log('Image upload error:', error.message);
+      return null;
+    }
+
+    const { data: publicUrlData } = supabase.storage
+      .from('report-images')
+      .getPublicUrl(data.path);
+
+    return publicUrlData.publicUrl;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +55,8 @@ const ReportForm = ({ onSubmit, onClose }) => {
       return;
     }
 
+    const imageUrl = await uploadImage();
+
     const newReport = {
       category,
       description,
@@ -32,6 +64,7 @@ const ReportForm = ({ onSubmit, onClose }) => {
       full_name: name || loggedInUser.full_name,
       email: email || loggedInUser.email,
       user_id: loggedInUser.id,
+      image_url: imageUrl,
       status: 'pending'
     };
 
@@ -58,13 +91,14 @@ const ReportForm = ({ onSubmit, onClose }) => {
       setCategory('');
       setDescription('');
       setLocation('');
+      setImage(null);
       setName(loggedInUser.full_name || '');
       setEmail(loggedInUser.email || '');
       setError('');
 
       if (onSubmit) onSubmit(data);
       if (onClose) onClose();
-      
+
     } catch (err) {
       console.error('Error submitting report:', err);
       setError('Server error. Please try again.');
@@ -126,6 +160,19 @@ const ReportForm = ({ onSubmit, onClose }) => {
             onChange={(e) => setLocation(e.target.value)}
             className={inputClass}
             required
+          />
+        </div>
+
+        {/* IMAGE UPLOAD */}
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-medium text-green-800">
+            Upload Image (optional)
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className={inputClass}
           />
         </div>
 
