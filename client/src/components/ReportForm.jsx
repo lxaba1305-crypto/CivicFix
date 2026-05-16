@@ -1,10 +1,11 @@
 import { useState } from 'react';
 
 const ReportForm = ({ onSubmit, onClose }) => {
-  const loggedInUser = JSON.parse(localStorage.getItem('user') || '{}');
+  const storedUser = localStorage.getItem('user');
+  const loggedInUser = storedUser ? JSON.parse(storedUser) : null;
 
   const [email, setEmail] = useState(loggedInUser.email || '');
-  const [name, setName] = useState(loggedInUser.name || '');
+  const [name, setName] = useState(loggedInUser.full_name || '');
 
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
@@ -17,12 +18,18 @@ const ReportForm = ({ onSubmit, onClose }) => {
     setError('');
     setLoading(true);
 
+    // USER MUST BE LOGGED INSERT
+    if (!loggedInUser?.id) {
+      setError('You must be logged in to submit a report.');
+      setLoading(false);
+      return;
+    }
+
     const newReport = {
-      title: category,
       category,
       description,
       location,
-      full_name: name || loggedInUser.name,
+      full_name: name || loggedInUser.full_name,
       email: email || loggedInUser.email,
       user_id: loggedInUser.id,
       status: 'pending'
@@ -47,15 +54,17 @@ const ReportForm = ({ onSubmit, onClose }) => {
 
       alert('Report submitted successfully');
 
+      // RESET FORM
       setCategory('');
       setDescription('');
       setLocation('');
-      setName('');
-      setEmail('');
+      setName(loggedInUser.full_name || '');
+      setEmail(loggedInUser.email || '');
       setError('');
 
       if (onSubmit) onSubmit(data);
       if (onClose) onClose();
+      
     } catch (err) {
       console.error('Error submitting report:', err);
       setError('Server error. Please try again.');
