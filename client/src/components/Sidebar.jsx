@@ -126,8 +126,11 @@ console.log('Sidebar role:', userRole);
           {userName?.charAt(0)?.toUpperCase()}
         </div>
 
-        <div className='flex flex-col flex-1'>
-          <span className='text-sm font-semibold text-green-900'>
+        <div 
+         className='flex flex-col flex-1 min-w-0'
+         onClick={() => navigate('/profile')}
+        >
+          <span className='text-sm font-semibold text-green-900 truncate'>
             {userName}
           </span>
           <span className='text-xs text-green-700/70 truncate'>
@@ -168,14 +171,18 @@ console.log('Sidebar role:', userRole);
 
           {/* BOTTOM */}
           <div className='px-4 py-5 border-t border-green-100 flex items-center gap-3 bg-white/60 backdrop-blur-sm'>
-            <div className='w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 text-white text-sm font-bold flex items-center justify-center shadow-md'>
+            <div 
+             onClick={() => navigate('/profile')}
+            className='w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 text-white text-sm font-bold flex items-center justify-center shadow-md'>
               {userName?.charAt(0)?.toUpperCase()}
             </div>
 
             <div 
             onClick={() => navigate('/profile')}
              className='flex flex-col flex-1 min-w-0'>
-              <span className='text-sm font-semibold text-green-900 truncate'>{userName}</span>
+              <span 
+               onClick={() => navigate('/profile')}
+              className='text-sm font-semibold text-green-900 truncate'>{userName}</span>
               <span className="text-xs text-green-700/70 truncate">{userEmail}</span>
             </div>
             <button onClick={handleLogout} className="p-2 rounded-xl text-red-500 hover:bg-red-100 transition shadow-sm cursor-pointer">

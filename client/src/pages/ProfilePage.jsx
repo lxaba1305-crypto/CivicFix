@@ -114,7 +114,7 @@ function ProfilePage() {
                         name="bio"
                         value={form.bio}
                         onChange={handleChange}
-                        className={`${inputClass} + "resize-none h-20"`}
+                        className={`${inputClass} resize-none h-20`}
                         placeholder="Tell us a bit about yourself..."
                     />
                 </div>
@@ -134,3 +134,5 @@ function ProfilePage() {
         
     )
 }
+
+export default ProfilePage;
