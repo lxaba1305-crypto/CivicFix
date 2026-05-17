@@ -1,8 +1,10 @@
 import { MdNotificationsNone } from "react-icons/md";
 import { HiOutlineSearch } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
 
 function Navbar({ title, user, notificationCount = 0, onSearch, showSearch = false }) {
-  
+  const navigate = useNavigate();
+
   return (
     <nav className="w-full bg-white border-b border-stone-200 px-4 sm:px-6 h-14 flex items-center">
       <div className="w-full flex items-center justify-between gap-3">
@@ -45,7 +47,9 @@ function Navbar({ title, user, notificationCount = 0, onSearch, showSearch = fal
           </div>
 
           {/* Avatar */}
-          <div className="w-7 h-7 rounded-full bg-green-100 border border-green-200 flex items-center justify-center text-[11px] font-medium text-green-800 shrink-0">
+          <div
+              onClick={() => navigate('/profile')}
+           className="w-7 h-7 rounded-full bg-green-100 border border-green-200 flex items-center justify-center text-[11px] font-medium text-green-800 shrink-0 cursor-pointer hover:ring-2 hover:ring-green-400 transition">
             {user?.email ? user.email.slice(0,2).toUpperCase() : 'AD'}
           </div>
 
