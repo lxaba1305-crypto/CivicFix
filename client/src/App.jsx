@@ -11,6 +11,7 @@ import WelcomeScreen from './pages/WelcomeScreen';
 import ReportsPage from './pages/ReportsPage';
 import UsersPage from './pages/UsersPage';
 import IntroScreen from './pages/IntroScreen';
+import ProfilePage from './pages/ProfilePage';
 import { supabase } from './supabaseClient';
 
 function App() {
@@ -141,6 +142,17 @@ function App() {
             <Navbar title='Users' user={user} />
             <main className='flex-1 bg-stone-50 overflow-y-auto'>
               <UsersPage />
+            </main>
+          </div>
+        </div>
+      } />
+      <Route path='/profile' element={
+        <div className='flex h-screen overflow-hidden'>
+          <Sidebar role={role} setRole={handleRoleChange} />
+          <div className='flex-1 flex flex-col overflow-hidden'>
+            <Navbar title='Profile' user={user} />
+            <main className='flex-1 bg-stone-50 overflow-y-auto'>
+              <ProfilePage />
             </main>
           </div>
         </div>
