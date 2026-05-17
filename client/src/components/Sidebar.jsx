@@ -172,7 +172,9 @@ console.log('Sidebar role:', userRole);
               {userName?.charAt(0)?.toUpperCase()}
             </div>
 
-            <div className='flex flex-col flex-1 min-w-0'>
+            <div 
+            onClick={() => navigate('/profile')}
+             className='flex flex-col flex-1 min-w-0'>
               <span className='text-sm font-semibold text-green-900 truncate'>{userName}</span>
               <span className="text-xs text-green-700/70 truncate">{userEmail}</span>
             </div>
